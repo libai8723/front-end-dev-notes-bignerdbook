@@ -1,0 +1,16 @@
+Setting Up Your First Project
+
+
+1. Setting up the project directories structure.
+2. Initial HTML
+  2.1 a basic knowledge
+
+
+            Element
+      --------------------------
+      |                        |
+         <---content------->
+      <p>this is a paragraph</p>
+        ^                   ^
+        |                   |
+    open tag            close tag
