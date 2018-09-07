@@ -16,7 +16,6 @@ date: 2018-09-07
 
 ```
 ---
-layout: post
 title: An Short Intro and Template for Jekyll Post
 date: 2018-09-07
 ---
