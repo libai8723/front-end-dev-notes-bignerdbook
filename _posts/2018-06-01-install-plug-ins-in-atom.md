@@ -1,3 +1,8 @@
+---
+title: Install plug-ins to ATOM editor
+date: 2018-06-01
+---
+
 First : installed plug-ins:
 ====
 
