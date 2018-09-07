@@ -1,3 +1,8 @@
+---
+title: Setting Up Your First Project
+date: 2018-06-02
+---
+
 Setting Up Your First Project
 ==
 
