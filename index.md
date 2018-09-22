@@ -10,10 +10,10 @@ and i think the Github Pages is perfect for hosting such a personal log.
 [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
 
 ## Post Entries ##
-<ul>
+<ol>
   {% for post in site.posts %}
     <li>
-      <a href="/front-end-dev-notes-bignerdbook{{ post.url }}">{{ post.title }} ---- {{ post.date }}</a>
+      <a href="/front-end-dev-notes-bignerdbook{{ post.url }}">{{ post.title }} at {{ post.date }}</a>
     </li>
   {% endfor %}
-</ul>
+</ol>
