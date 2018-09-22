@@ -9,4 +9,11 @@ and i think the Github Pages is perfect for hosting such a personal log.
 ## Useful link ##
 [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
 
-## test ## 
+## Post Entries ##
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }} ---- {{ post.date }}</a>
+    </li>
+  {% endfor %}
+</ul>
