@@ -1,6 +1,6 @@
 ---
-title: Install plug-ins to ATOM editor
-date: 2018-06-01
+title: Advanced AMD Usage
+date: 2018-10-06
 tag: dojo amd
 ---
 
