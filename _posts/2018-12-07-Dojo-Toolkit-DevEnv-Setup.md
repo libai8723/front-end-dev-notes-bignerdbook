@@ -1,7 +1,7 @@
 ---
-title: Advanced AMD Usage
-date: 2018-10-06
-tag: dojo amd
+title: Dojo-Toolkit-DevEnv-Setup
+date: 2018-12-07
+tag: dojo dijit environment setup
 ---
 
 How to setup the Dojo Development Environment
