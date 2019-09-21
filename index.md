@@ -1,10 +1,11 @@
-front-end-dev-notes-bignerdbook
+A Very Chatty Blog of LiBai
 ===
 
 ## Intro ##
 This is a personal log about learning front end development, mainly about the book <Front-End Web Development The Big Nerd Ranch Guide>.
 
-and i think the Github Pages is perfect for hosting such a personal log.
+and i think the Github Pages is perfect for hosting such a personal log. On 2019-09-21, I think I shoud put other blog here. For example, vue, react, maven, java Spring boot.
+
 
 ## Useful link ##
 [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
