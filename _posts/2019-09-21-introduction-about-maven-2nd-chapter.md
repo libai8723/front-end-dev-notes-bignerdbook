@@ -58,13 +58,18 @@ Once you start using Maven extensively, you’ll notice that Maven has created s
 
 这里的波浪线~指的是用户的home文件夹。一般在linux里面，~指的是/home/username/
 
-在windows 10里面呢，一般指的是 C:\Users\Q\.m2
-
+在windows 10里面呢，一般指的是 
+```cmd
+C:\Users\Q\.m2
+```
 下面是setting.xml文件的解释，还有repository就是本地的仓库的目录了。
 
 ~/.m2/settings.xml
+
 A file containing user-specific configuration for authentication, repositories, and other information to customize the behavior of Maven.
+
 ~/.m2/repository/
+
 This directory contains your local Maven repository. When you download a dependency from a remote Maven repository, Maven stores a copy of the dependency in your local repository.
 
 我现在是直接修改了maven安装目录下面conf文件夹下面的setting.xml文件，这样是一种不好的实践。具体的原因如下：
