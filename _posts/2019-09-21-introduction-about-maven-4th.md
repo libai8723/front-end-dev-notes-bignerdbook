@@ -40,7 +40,7 @@ $mvn archetype:generate
 
 A maven plugin is a collection of one or many goals.
 
-![A Plugin contains Goals Image](../_img/PluginContainsGoals.png)
+![A Plugin contains Goals Image]({{ site.url }}/assets/PluginContainsGoals.png.png)
 
 那么我们来看几个比较简单的但是核心的插件的例子：
 
