@@ -53,3 +53,29 @@ A maven plugin is a collection of one or many goals.
 1. **Hibernate3 plugin**: for integration with the popular persistence library Hibernate.
 2. **JRuby plugin**: which allows you to execute Ruby as part of Maven build or to write Maven plugins in Ruby
 3. **customer plugins**: Maven also provides for the ability to define custom plugins. A custom plugin can be written in Java.
+
+### 1.1.2 What is a Goal?
+
+1. A goal is a specific task that may be executed as a standalone goal or along with other goals as part of a larger build. Goal是一些特定的任务，这些goal可以被单独执行，或者与其他goal一起作为一个大型build过程的一部分。
+2. A goal is a "Unit of Work" in Maven. Goal在Maven中是工作的单位。
+
+下面是一些Goal的样例：
+1. **compile** goal in the Compiler plugin
+2. **test** goal in the Surefire plugin
+
+Goals 可以通过一些配置属性来进行配置，从而customize behavior。关于customize behavior的事情，其实我们已经看过一个例子了，那就是之前我们使用archetype:generate来生成了一个简单的simple project，我们指定了package属性。
+
+```text
+When referring to a plugin goal, we frequently use the shorthand notation: pluginId:goalId. 
+For example, when referring to the generate goal in the Archetype plugin, we write archetype:generate.
+注意这里的archetype:generate是一个goal的简写
+```
+
+### 1.1.3 Sensible Default Values
+
+Goals define parameters that can define sensible default values. Goals定义了参数，并且这些参数是可以定义有意义的默认值的。这其实进一步说明了 convention over configuration的设计思想。
+
+在archetype:generate中我们指定了groupId和artifactId，但是我们没有指定type of artifact，所以generate这个goal会在指定的过程中，停下来，给我们一个prompt，来问我们想要创建什么样子的artifact。
+
+反过来如果我们使用archetype:create的goal的话，那么maven会假定我们希望产生一个maven-archetype-quickstart类型的的archetype。这就是Sensible default value的很好的例子。
+
