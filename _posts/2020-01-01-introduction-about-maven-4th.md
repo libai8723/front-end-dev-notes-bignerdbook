@@ -34,7 +34,7 @@ $mvn archetype:generate
 
 当Maven执行一个插件的Goal的时候，它会把插件的标识符和目标的标识符打印到标准输出中，就像上面这样。
 
-### 1.1.1 What is a Plugin?
+### 1.1.1 What is a Plugin
 
 一个Maven的插件就是一个或者几个goals的集合。
 
@@ -54,19 +54,20 @@ A maven plugin is a collection of one or many goals.
 2. **JRuby plugin**: which allows you to execute Ruby as part of Maven build or to write Maven plugins in Ruby
 3. **customer plugins**: Maven also provides for the ability to define custom plugins. A custom plugin can be written in Java.
 
-### 1.1.2 What is a Goal?
+### 1.1.2 What is a Goal
 
 1. A goal is a specific task that may be executed as a standalone goal or along with other goals as part of a larger build. Goal是一些特定的任务，这些goal可以被单独执行，或者与其他goal一起作为一个大型build过程的一部分。
 2. A goal is a "Unit of Work" in Maven. Goal在Maven中是工作的单位。
 
 下面是一些Goal的样例：
+
 1. **compile** goal in the Compiler plugin
 2. **test** goal in the Surefire plugin
 
 Goals 可以通过一些配置属性来进行配置，从而customize behavior。关于customize behavior的事情，其实我们已经看过一个例子了，那就是之前我们使用archetype:generate来生成了一个简单的simple project，我们指定了package属性。
 
 ```text
-When referring to a plugin goal, we frequently use the shorthand notation: pluginId:goalId. 
+When referring to a plugin goal, we frequently use the shorthand notation: pluginId:goalId.
 For example, when referring to the generate goal in the Archetype plugin, we write archetype:generate.
 注意这里的archetype:generate是一个goal的简写
 ```
@@ -159,13 +160,13 @@ When maven executes a goal, each goal has access to the information defined in a
 
 Goals are actions we wish to take upon a project, and a project is defined by a POM.
 
-POM命名了一个项目，针对一个项目提供了一组唯一的标识符（coordinates）。并且POM定义了我们当前的项目的它的一些东西的关系，其他的一些东西指的是依赖库（dependencies），父项目（parents）和先决条件（prerequisition）。
+POM命名了一个项目，针对一个项目提供了一组唯一的标识符（coordinates）。并且POM定义了我们当前的项目的它的一些东西的关系，其他的一些东西指的是依赖库（dependencies），父项目（parents）和先决条件（prerequisite）。
 
 同样的我们也可以通过POM文件来定制化Plugin的行为，提供这个项目的关于关于社区和参与其中的开发人员的信息。
 
 下面的图是一个典型的POM的样例:
 
-![some exmaple about POM](https://books.sonatype.com/mvnex-book/reference/figs/web/simple-project_annopom.png)
+![some example about POM](https://books.sonatype.com/mvnex-book/reference/figs/web/simple-project_annopom.png)
 
 在这个样例中，我们标红的部分，我们就说是这个项目的coordinates，这里可以看到有4个element构成了我们的项目的coordinates，分别是groupId，artifactId，packaging，version。事实上还有第五个元素，叫做 classifier，目前来说我们不太关心这个classifier是干啥的，在本书的后续的部分我们会介绍这个。@todo
 
@@ -184,13 +185,14 @@ groupId:artifactId:packaging:version
 注：space这个词，在数学中有非常强的抽象的意义，比如希尔伯特空间，自然数空间，实数空间，有理数空间等等；基于此还能衍生出比如有理数空间是否是致密的等等。空间其实一个抽象的概念，有点像集合的概念。说不太清楚，因为在xml，在python，等等原文介绍中经常还会出现namespace这种名词。为什么要出现空间，一者是为了界定什么是合法的，二者是为了区分。
 
 ## 1.4 Maven Repository
+
 其实当我们第一次运行mvn archetype:generate的时候，我们就会注意到，我们下载了很多东西的。因为maven就是这么设计的。
 
 Maven ships with the bare minimum and fetches from a remote repository when it needs to. Maven ships with a default remote repository location (<http://repo1.maven.org/maven2)> which it uses to download the core Maven plugins and dependencies.
 
 Often you will be writing a project which depends on libraries that are neither free nor publicly distributed. In this case you will need to either setup a custom repository inside your organization’s network or download and install the dependencies manually.
 
-What makes a Maven repository a Maven repository? A repository is a collection of project artifacts stored in a directory structure that closely matches a project’s Maven coordinates. You can see this structure by opening up a web browser and browsing the central Maven repository at http://repo1.maven.org/maven2/. You will see that an artifact with the coordinates org.apache.commons:commons-email:1.1 is available under the directory /org/apache/commons/commons-email/1.1/ in a file named commons-email-1.1.jar. The standard for a Maven repository is to store an artifact in the following directory relative to the root of the repository:
+What makes a Maven repository a Maven repository? A repository is a collection of project artifacts stored in a directory structure that closely matches a project’s Maven coordinates. You can see this structure by opening up a web browser and browsing the central Maven repository at <http://repo1.maven.org/maven2/.> You will see that an artifact with the coordinates org.apache.commons:commons-email:1.1 is available under the directory /org/apache/commons/commons-email/1.1/ in a file named commons-email-1.1.jar. The standard for a Maven repository is to store an artifact in the following directory relative to the root of the repository:
 
 ```text
 /<groupId>/<artifactId>/<version>/<artifactId>-<version>.<packaging>
@@ -198,4 +200,4 @@ What makes a Maven repository a Maven repository? A repository is a collection o
 
 Maven installed our project’s JAR file into our local Maven repository. Maven uses the local repository to share dependencies across local projects. If you develop two projects—project A and project B—with project B depending on the artifact produced by project A, Maven will retrieve project A’s artifact from your local repository when it is building project B. Maven repositories are both a local cache of artifacts downloaded from a remote repository and a mechanism for allowing your projects to depend on each other.
 
-## 1.5 Maven's Dependency Management(@todo, pending reading)
+## 1.5 Maven's Dependency Management(@todo, pending reading
