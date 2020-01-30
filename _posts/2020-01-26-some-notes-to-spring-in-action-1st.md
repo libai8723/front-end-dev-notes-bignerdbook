@@ -1,5 +1,5 @@
 ---
-title: "Some notes to <Spring in Action 4th edition> 1st" 
+title: "Some notes to Spring in Action 4th edition 1st" 
 date: 2020-01-26
 tag: Spring, IoC
 ---
