@@ -98,10 +98,18 @@ Joint Points这个概念在一月底的时候，我进行阅读的时候，还�
 
 It’s not possible for any one meter reader to visit all houses serviced by the electric company. Instead, each one is assigned a subset of all the houses to visit. Likewise, an aspect doesn’t necessarily advise all join points in an application. Pointcuts help narrow down the join points advised by an aspect.
 
+对于一个抄表员来说，几乎是不可能让她一个人把所有的房间的电表都读取一遍的。实际上来说，每个抄表员都会被分配到一个电力公司所服务的房间的子集来读取电表。同样的道理，一个aspect也没有必要把一个应用种所有可能的join points都advise一遍。所以pointcuts帮助把需要真正进行advise的join points的点都筛选出来。
+
 If advice defines the what and when of aspects, then pointcuts define the where. A pointcut definition matches one or more join points at which advice should be woven. Often you specify these pointcuts using explicit class and method names or through regular expressions that define matching class and method name patterns. Some AOP frameworks allow you to create dynamic pointcuts that determine whether to apply advice based on runtime decisions, such as the value of method parameters.
+
+如果说advice定义了在aspect的what和when的话，也就是说advice定义了aspect做什么和什么时候做，那么pointcuts就定义了在什么地方做。一个pointcut的定义，可以匹配一个或者多个join points，而在这些连接点的地方，advice应该被编织进去。
+
+所以看这本书的时候，作者的比喻还是非常有趣的。比如，把advice比喻成一个编织物的装饰，那么AOP的编程更多的时候，是为了把这些装饰物编织到恰当的位置。这个编织的过程，应该是由框架（Spring AOP）或者编译器（AspectJ）来完成的，这样程序员就无需关注这些东西，而是关注自己关注的业务逻辑了。
 
 #### Aspects
 
 When a meter reader starts his day, he knows both what he’s supposed to do (report electricity usage) and which houses to collect that information from. Thus he knows everything he needs to know to get his job done.
 
 An aspect is the merger of advice and pointcuts. Taken together, advice and pointcuts define everything there is to know about an aspect—what it does and where and when it does it.
+
+@todo 2020-05-11 07:53
