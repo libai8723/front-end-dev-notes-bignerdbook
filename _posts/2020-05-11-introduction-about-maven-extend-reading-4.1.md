@@ -83,7 +83,10 @@ Phase | Description
 pre-site | execute processes needed prior to the actual project site generation
 site | generate the project's site documentation
 post-site | execute processes needed to finalize the site generation, and to prepare for site deployment
-site-deploy | deploy the generated site documentation to the specified web server,看到这一步的描述，终于知道为什么叫site了，因为原来的hacker还是比较有操守的，大家发布了库之后，还有对应的站点来承载相应的文档，所以叫site
+site-deploy | deploy the generated site documentation to the specified web server
+
+
+看到这一步的描述，终于知道为什么叫site了，因为原来的hacker还是比较有操守的，大家发布了库之后，还有对应的站点来承载相应的文档，所以叫site
 
 下面是default lifecycle中常见的build phases的名字和解释：
 
