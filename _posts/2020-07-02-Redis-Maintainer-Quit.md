@@ -70,4 +70,38 @@ So what happens? That you start to prioritize more and more what to look at and 
 
 情况复杂难以处理。通常来说，在最终结果会怎么样呢？通常来说我们会发展出一种态度，一种忽视一切的态度，尤其是忽视new stuff，因为你的attitude都被address到critical issus上了。毕竟新的stuff会带来新更大的代码仓，更多的PR和Issues，而这些恰好是我们不想要的。可能这些新的PR还是用了一种与你现有的代码仓完全不同，且更复杂的编码方式来实现的，所以这为你的项目带来了更多的复杂性，然后当你遇到critical issues的时候，你只能祈求一些good luck来锁定根因。
 
+### Role Shifting
+
+As a result of the “flood effect” problem exposed above, you suddenly also change job. Redis became popular because I supposedly am able to design and write software. And now instead most of the work I do is to look at issues and pull requests, and I also feel that I could do better many of the contributions I receive. Some will be better quality than I could do, because there are also better programmers than me contributing to Redis, but *most* for the nature of big numbers will be average contributions that are just written to solve a given problem that was contingent for the folks that submitted it. While, when I design for Redis, I tend to think at Redis as a whole, because it’s years I write this thing. So what you were good at, you have no longer time to do. This in turn means less organic big new features. My solution with that? Sometimes I just stop looking at issues and PRs for weeks, because I’m coding or designing: that is the work I really love and enjoy. However this in turn creates ways more pressure on me, psychologically. To do what I love and I can do well I’ve to feel like shit.
+
+由于上面提到的洪水效应的问题，你突然发现你的工作的角色完全发生了变化。 我猜测Redis变的流行主要是因为我能够设计和编写出好的软件。 但是成为OSS的维护人之后，我更多关注的是issue和PR，相对于很多我收到的contributions来说，我感觉我明明能做的更好，但是我没有时间去做了。
+
+当然，也有一些贡献者提供的代码质量是比我更好的，因为当然有很多更好的程序员向Redis提交代码。 但是贡献者中的大多数都是非常平均的水平，也就是一般的水平，他们提交的代码仅仅是为了解决它们所遇到的特定的问题的。而我作为Redis的设计者，我通常把Redis当作一个整体来对待，因为我在这个东西上花费了数年的时间。这些是我擅长的事情，但是现在没有时间去做了。这也导致了Redis中越来越少的有用的特性的出现。而我对应这个问题的方式也很简单，有时间我就单纯的停止去看issues和pr，这是造成我压力的根源。
+
+然而为了去做我所爱和我所擅长的事情，不管不顾其他贡献者，让我feels like shit。
+
+### Time
+
+There are two problems related to working at the same project for a prolonged amount of time, at least for me. First, before of the Redis experience I *never* worked every week day of my life. I could work one week, stop two, then work one month, then disappear for other two months. Always. People need to recharge, get new energy and ideas, to do creative work. And programming at high level is a fucking creative job. Redis itself was created like that for the first two years, that is, when the project evolved at the fastest speed. Because the sum of the productivity of me working just when I want is greater than the productivity I’ve when I’m forced to work every day in a steady way.
+
+对我来说在同一个project上工作特别上的时间存在两个巨大的问题。首先，在从事Redis的工作之前，在我的生活中我从未在连续的工作周工作。我可以一周工作，然后停下来两周，然后工作一个月，然后消失两个月。 我总是认为，人们需要为自己充电，补充能量获取新的灵感和创意，从而才能做好创造性的工作。而从某一个高度来看，编程恰恰就是这样一个具有创意性的工作。 而Redis就是在这样的工作方式下创造出来的，在Redis的前两年中，project进化的很快。我认为，当我想要工作的时候，我的效率是大大于我每天都固定的工作一段时间的效率的。
+
+### Fear
+
+I always had some fear to lose the technological leadership of the project. Not because I think I’m not good enough at designing and evolving Redis, but because I know my ways are not aligned with: 1) what a sizable amount of users want. 2) what most people in IT believe software is. So I had to constantly balance between what I believe to be good design, set of features, speed of development (slow), size of the project (minimal), and what I was expected to deliver by most of the user base. Fortunately there is a percentage of Redis users that understand perfectly the Redis-way, so at least from time to time I can get some word of comfort.
+
+作为Redis我害怕失去项目的技术领导力。不是因为我担心我自己在设计和演化Redis上做的不够好，而是因为我知道我的工作方式不能和以下的东西对齐
+
+1. 大多数用户想要的东西
+2. 大多数IT从业人员认为软件是什么
+
+所以我不得不持续的平衡我自己认为的好的与其他人要求的东西：
+
+1. set of features.
+2. speed of development(slow)
+3. size of the project(minimal)
+4. demands of most of the user base
+
+然而幸运的是，有一定比例的Redis的用户，对于Redis的理解非常完美，这是让我感到欣慰的地方。
+
 @todo
