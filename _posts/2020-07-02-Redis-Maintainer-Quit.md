@@ -104,4 +104,14 @@ I always had some fear to lose the technological leadership of the project. Not 
 
 然而幸运的是，有一定比例的Redis的用户，对于Redis的理解非常完美，这是让我感到欣慰的地方。
 
-@todo
+### Frictions
+
+Certain people are total assholes. They are everywhere, it is natural and if you ask me, I even believe in programming there are a lot more nice people than in other fields. But yet you’ll always see a percentage of total jerks. As the leader of a popular OSS project, in one way or the other you’ll have to confront with these people, and that’s maybe one of the most stressful things I ever did in the course of the Redis development.
+
+有些人完完全全就是assholes，这些人无处不在，这种事情非常自然，如果你一定要问，我认为在programming领域中，显然更多的人友好的，比其他领域好的多。但是你总会遇到很多jerks，而你作为一个OSS的Leader，你总会以不同的方式与它们进行交锋，这是在Redis开发过程中最令人痛苦的事情。
+
+### Futileness（徒劳）
+
+Sometimes I believe that software, while great, will never be huge like writing a book that will survive for centuries. Note because it is not as great per-se, but because as a side effect it is also useful… and will be replaced when something more useful is around. I would like to have time to do other activities as well. So sometimes I believe all I’m doing is, in the end, futile. We’ll design and write systems, and new systems will emerge; but anyone that just stays in software, instead of staying in “software big ideas”, will ever set a new mark? From time to time I think I had potentially the ability to work at big ideas but because I focused on writing software instead of thinking about software, I was not able to use my potential in that regard. This is basically the contrary of the impostor syndrome, so I guess I’ve a big idea of myself: sorry for that I should be more humble.
+
+有的时候，我认为软件确实非常伟大，但是软件永远不会像一本有意义的书一样，延续若干个世纪。并不是因为软件本身不够好，而是因为软件还有一个副作用，那就是有用。
