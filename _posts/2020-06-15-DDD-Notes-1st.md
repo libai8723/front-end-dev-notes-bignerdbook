@@ -382,27 +382,27 @@ In practical terms, a typical module (and this is very rough and ready) might co
 
 ### Appendix
 
-[1] Domain Driven Design Community http://domaindrivendesign.org/
+[1] Domain Driven Design Community [http://domaindrivendesign.org/](http://domaindrivendesign.org/)
 
-[2] Spring BeanDoc http://spring-beandoc.sourceforge.net/
+[2] Spring BeanDoc [http://spring-beandoc.sourceforge.net/](http://spring-beandoc.sourceforge.net/)
 
-[3] Anaemic Domain Model, Martin Fowler http://martinfowler.com/bliki/AnemicDomainModel.html
+[3] Anaemic Domain Model, Martin Fowler [http://martinfowler.com/bliki/AnemicDomainModel.html](http://martinfowler.com/bliki/AnemicDomainModel.html)
 
-[4] FitNesse http://fitnesse.org
+[4] FitNesse [http://fitnesse.org](http://fitnesse.org)
 
-[5] Hexagonal Architecture, Alistair Cockburn http://alistair.cockburn.us/Hexagonal+architecture
+[5] Hexagonal Architecture, Alistair Cockburn [http://alistair.cockburn.us/Hexagonal+architecture](http://alistair.cockburn.us/Hexagonal+architecture)
 
-[6] Big Ball of Mud,> Brian Foote & Joseph Yoder http://www.laputan.org/mud/
+[6] Big Ball of Mud,> Brian Foote & Joseph Yoder [http://www.laputan.org/mud/](http://www.laputan.org/mud/)
 
-[7] Dependency Inversion Principle, Robert Martin http://www.objectmentor.com/resources/articles/dip.pdf
+[7] Dependency Inversion Principle, Robert Martin [http://www.objectmentor.com/resources/articles/dip.pdf](http://www.objectmentor.com/resources/articles/dip.pdf)
 
-[8] LINQ http://msdn.microsoft.com/en-us/netframework/aa904594.aspx
+[8] LINQ [http://msdn.microsoft.com/en-us/netframework/aa904594.aspx](http://msdn.microsoft.com/en-us/netframework/aa904594.aspx)
 
-[9] Hades http://hades.synyx.org/
+[9] Hades [http://hades.synyx.org/](http://hades.synyx.org/)
 
-[10] Apache Wicket Web Framework http://wicket.apache.org
+[10] Apache Wicket Web Framework [http://wicket.apache.org](http://wicket.apache.org)
 
-[11] Magical Number Seven, ±2 http://en.wikipedia.org/wiki/The_Magical Number_Seven,_Plus_or_Minus_Two
+[11] Magical Number Seven, ±2 [Magic Number Seven](https://en.wikipedia.org/wiki/%20The_Magical%20Number_Seven,_Plus_or_Minus_Two)
 
 [99]. 在看到这个概念理解上的开销的时候，conceptual overhead的时候，一开始我没懂这是什么意思，但是读到第三遍的时候，我突然懂了，因为我突然明白了，因为联想到了另外一本书《面向对象分析与设计》——< Object-Oriented Analysis and Desgin with Applicaitons>，里面也提到了复杂系统的5个属性。作者认为复杂系统具有：层次结构，相对本源，分离关注，共同模式，稳定的中间态。因为我们要做的很多系统，都是复杂系统，所以在处理这种复杂性时候，人类的能力是有局限的，经过心理学家Miller的研究，人类同时处理的最大信息数量是7个。所以如果我们不做层次化的抽象的话，我们其实是没有办法做复杂系统设计的，因为我们压根理解不了这个复杂系统。
 
