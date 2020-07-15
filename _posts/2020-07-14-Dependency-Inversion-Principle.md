@@ -69,4 +69,50 @@ The inversion of the dependencies and ownership encourages the re-usability of t
 
 这种依赖的反转的模式，和对于抽象层的所有权是鼓励我们对于高层级/策略层的重用的。高层级使用低层级的具体实现。当低层级的组件不可以使用的时候，或者当我们的应用需要使用一些已经存在的服务的时候，对于我们来说就可以加入一个Adapter中间层，在对应的现存服务和我们的抽象层之间。
 
-### Dependency inversion pattern generalization （@todo）
+### Dependency inversion pattern generalization
+
+依赖反转模式的泛化。
+
+In many projects the dependency inversion principle and pattern are considered as a single concept that should be generalized, i.e., applied to all interfaces between software modules. There are at least two reasons for that:
+
+在很多项目中依赖反转原理或者依赖反转模式被认为是一个应该被泛化的概念，例如在所有的modules之间都使用interface。这样做至少有2个原因：
+
+1. It is simpler to see a good thinking principle as a coding pattern. Once an abstract class or an interface has been coded, the programmer may say: "I have done the job of abstraction".
+
+2. Because many unit testing tools rely on inheritance to accomplish mocking, the usage of generic interfaces between classes (not only between modules when it makes sense to use generality) became the rule.
+
+* 把一个思考的原理（Dependency Inversion Principle）看作是一个编码的模式更简单。我们的编程人员一旦完成了一个抽象类或者interface，那么他可以说我已经完成了抽象的工作了。
+
+* 因为很多单元测试工具都依赖于继承来完成mocking的功能，在类之间广泛的使用interfaces于是成为了规则。简单理解就是为了使用单元测试工具从而建立的规则。
+
+If the mocking tool used relies only on inheritance, it may become necessary to widely apply the dependency inversion pattern. This has major drawbacks:
+
+如果我们的mocking工具只能依赖于继承，那么我们确实有必要广泛的使用依赖反转模式，但是这样会有一些明显的缺点：
+
+1. Merely implementing an interface over a class isn't sufficient to reduce coupling; only thinking about the potential abstraction of interactions can lead to a less coupled design.
+2. Implementing generic interfaces everywhere in a project makes it harder to understand and maintain. At each step the reader will ask themself what are the other implementations of this interface and the response is generally: only mocks.
+3. The interface generalization requires more plumbing code, in particular factories that generally rely on a dependency-injection framework.
+4. Interface generalization also restricts the usage of the programming language.
+
+* 针对一个类实现了一个差强人意的interface并不足以减少耦合；只有认真的思考在模块之间的交互的抽象行为才能减少耦合性很高的设计。
+* 在一个项目中充满了泛化的接口之后，对于后续的读者和维护者来说都是很难阅读和理解的。我们每读一步，总是会问到针对这个interface还有其他的实现吗，通常的回答就是仅仅有mock类实现了它。
+* 泛化的使用interface的后果会导致更多的接水管的代码，尤其是使用DI框架的工厂类。
+* interface泛化也会限制对于编程语言的使用。
+
+The presence of interfaces to accomplish the Dependency Inversion Pattern (DIP) has other design implications in an object-oriented program:
+
+通过使用interface的方式来实现依赖反转的模式，对于OOP来说还有其他设计上的影响：
+
+1. All member variables in a class must be interfaces or abstracts.
+2. All concrete class packages must connect only through interface or abstract class packages.
+3. No class should derive from a concrete class.
+4. No method should override an implemented method. [1]
+5. All variable instantiation requires the implementation of a creational pattern such as the factory method or the factory pattern, or the use of a dependency-injection framework.
+
+* 所有的类成员变量必须是interface或者抽象的
+* 所有的实现类的包只能通过interface或者抽象的类包来连接到其他类和包
+* 不可以从实现类派生出其他的类
+* 不应该override一个已经实现的method
+* 所有的对象变量的出实现都需要一个生成模式的实现，例如工厂方法，或者使用一个依赖注入框架
+
+@todo，剩下还有大概60%的内容没看，暂时不看了
