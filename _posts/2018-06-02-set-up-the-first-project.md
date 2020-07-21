@@ -1,8 +1,11 @@
 ---
 title: Setting Up Your First Project
 date: 2018-06-02
-tag: front-end development, project structure
+tag: "front-end development"
+excerpt_separator: <!--more-->
 ---
+搭建一个基本的前端开发项目的目录结构
+<!--more-->
 
 ## Setting Up Your First Project
 
