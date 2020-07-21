@@ -1,8 +1,12 @@
 ---
 title: "Learn Dojo Hello World Course"
 date: 2018-10-14
-tag: Mendix, Dojo, JavaScript
+tag: Dojo
+excerpt_separator: <!--more-->
 ---
+
+Dojo is an awesome framework, but the other 3 framwork became the main stream
+<!--more-->
 
 ## Learn Dojo Hello Course
 
