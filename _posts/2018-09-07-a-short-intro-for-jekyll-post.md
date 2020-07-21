@@ -1,8 +1,12 @@
 ---
 title: "An Short Intro and Template for Jekyll Post"
 date: 2018-09-07
-tag: JekyII Post
+tag: JekyII
+excerpt_separator: <!--more-->
 ---
+
+如何设置JekyII这个博客的框架，可配置性还是很强的
+<!--more-->
 
 ## Some simple intro about Jekyll
 
