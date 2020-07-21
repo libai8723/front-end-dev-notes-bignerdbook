@@ -21,3 +21,13 @@ and i think the Github Pages is perfect for hosting such a personal log. On 2019
     </li>
   {% endfor %}
 </ol>
+
+## Display Posts by tags
+{% for tag in site.tags %}
+  <h3>{{ tag[0] }}</h3>
+  <ul>
+    {% for post in tag[1] %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endfor %}
