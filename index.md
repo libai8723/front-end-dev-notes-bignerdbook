@@ -14,7 +14,10 @@ and i think the Github Pages is perfect for hosting such a personal log. On 2019
 <ol>
   {% for post in site.posts %}
     <li>
-      <a href="/front-end-dev-notes-bignerdbook{{ post.url }}">{{ post.title }} at {{ post.date }}</a>
+      <h2>
+      <a href="/front-end-dev-notes-bignerdbook{{ post.url }}">{{ post.title }} at {{ post.date | date_to_string }}</a>
+      </h2>
+      {{ post.excerpt }}
     </li>
   {% endfor %}
 </ol>
