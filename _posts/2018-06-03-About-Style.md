@@ -1,5 +1,5 @@
 ---
-title: The 3rd Chapter about style
+title: "The 3rd Chapter about style"
 date: 2018-06-03
 tag: "front-end development" CSS
 excerpt_separator: <!--more-->
