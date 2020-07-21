@@ -4,6 +4,8 @@ date: 2020-07-14
 tag: Dependency Inversion Principle
 ---
 
+依赖反转原理是OOD中一个非常出名的原理（Principle），之前一直和DI（依赖注入）搞混了，本次特别学习了一下
+
 ## Dependency Inversion Principle
 
 之前看看到DDD Introduction的时候看到一篇关于Dependency Inversion的博客还是写的很好的，因此快速阅读一下

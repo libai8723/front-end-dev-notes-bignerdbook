@@ -5,7 +5,7 @@ tag: MicroService in Action, Spring Boot
 excerpt: "阅读微服务架构实战这本书的第三章"
 ---
 
-尝试在二级标题之前写一段话进行简述
+微服务架构实战第三章主要介绍Spring boot和集成其他开源三方件的便利之处，所以才会有这个标题
 
 ## 第三章 微服务之Spring Boot
 
