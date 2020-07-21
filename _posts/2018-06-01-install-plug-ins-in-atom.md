@@ -2,10 +2,11 @@
 title: "Install plug-ins to ATOM editor"
 date: 2018-06-01
 tag: front-end development, atom
+excerpt_separator: <!--more-->
 ---
 
 install some plugins in atom editor to help with front-end development
-
+<!--more-->
 ## First installed plug-ins
 
 ### 1. The Plugin List
