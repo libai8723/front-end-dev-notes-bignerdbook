@@ -1,8 +1,12 @@
 ---
 title: "Configuring Dojo with dojoConfig"
 date: 2018-10-05
-tag: Mendix, Dojo, JavaScript
+tag: Dojo
+excerpt_separator: <!--more-->
 ---
+
+dojoConfig是一个json的对象，当时学习完毕这个概念之后，才发现js的很多写法都是传入一个json对象来作为一个框架的或者函数的基本配置的。
+<!--more-->
 
 ## Configuring Dojo with dojoConfig
 
