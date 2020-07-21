@@ -1,11 +1,11 @@
 ---
 title: "The 3rd Chapter about style"
 date: 2018-06-03
-tag: "front-end development" CSS
+tag: "front-end development"
 excerpt_separator: <!--more-->
 ---
 
-一些最近本的关于style和CSS的概念
+一些最基本的关于style和CSS的概念
 <!--more-->
 
 ## The Third Chapter about style
