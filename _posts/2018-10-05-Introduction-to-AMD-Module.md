@@ -1,8 +1,12 @@
 ---
 title: "Introduction to AMD Module"
 date: 2018-10-05
-tag: Mendix, Dojo, AMD， JavaScript
+tag: Dojo
+excerpt_separator: <!--more-->
 ---
+
+AMD是一种曾经非常主流的js module的定义，但是后来不流行了，因为Mendix的原因我这边曾经短暂的学习过一下dojo和amd
+<!--more-->
 
 ## [Topic List 2 ]Introduction to AMD Module
 

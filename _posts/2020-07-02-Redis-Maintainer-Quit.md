@@ -1,9 +1,11 @@
 ---
 title: "Redis's Founder Quit" 
 date: 2020-07-02
-tag: Redis Open-Source Software
+tag: Redis "Open-Source Software"
+excerpt_separator: <!--more-->
 ---
-
+一开始看到Redis的创始人不再维护Redis的时候有点诧异，于是研读了一下创始人的博客
+<!--more-->
 ## Redis's Founder
 
 其实是昨天早晨看到这个贴子的，觉得有点意思，于是看了一下原文和作者在1年前写的一篇关于开源软件的帖子，感受还是挺怪的，可以记录一下

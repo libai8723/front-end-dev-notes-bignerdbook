@@ -2,7 +2,11 @@
 title: "Git Usage Tips"
 date: 2018-09-25
 tag: Git
+excerpt_separator: <!--more-->
 ---
+
+对于git的配置是从哪里来的呢，我一直很疑惑，所以看到一个git config --list --show-origin非常有用，因此记录一下
+<!--more-->
 
 ## Git usage tips
 

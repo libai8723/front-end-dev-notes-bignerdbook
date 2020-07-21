@@ -1,8 +1,12 @@
 ---
 title: "Advanced AMD Usage"
 date: 2018-10-06
-tag: dojo amd
+tag: dojo
+excerpt_separator: <!--more-->
 ---
+
+AMD的意思是异步模块定义（asynchronize module definition），是曾经一种比较流行的js模块定义方式
+<!--more-->
 
 ## [Topic List 10] Advanced AMD Usage
 

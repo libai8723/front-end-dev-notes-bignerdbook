@@ -1,9 +1,12 @@
 ---
 title: "Modern Dojo"
 date: 2018-10-04
-tag: Mendix, Dojo, JavaScript
+tag: Dojo
+excerpt_separator: <!--more-->
 ---
 
+这其实是一章总览，介绍现代化（2013年左右吧）的Dojo的开发和一些基本的概念，当时我看了2天，觉得真心不错。后来为什么被三大框架取代了呢。
+<!--more-->
 
 ## [Topic List 3] Modern Dojo
 
