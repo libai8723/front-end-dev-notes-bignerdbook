@@ -1,8 +1,12 @@
 ---
 title: "A short understanding about Node&NPM Module or Package loaded"
 date: 2018-09-30
-tag: Node.js, NPM Module
+tag: Node.js
+excerpt_separator: <!--more-->
 ---
+
+介绍Nodejs和Npm Module是什么，其实后来回想的时候发现，js的module定义真的好乱，其实直接从TypeScript来学可能也是一个不错的思路。
+<!--more-->
 
 ## A short understanding about Node&NPM Module or Package loaded
 
