@@ -1,13 +1,18 @@
-Git usage tips
-===
+---
+title: "Git Usage Tips"
+date: 2018-09-25
+tag: Git
+---
+
+## Git usage tips
 
 Recently I maybe will use git a lot, for now i only know several simple command, so i want to write the frequently used command down for later usage:
 
-
 today i find a command very useful to find out all the configuration's origin, aka, where do the config value come from
 
-## 1. show config origin, helps me a lot
-```
+### 1. show config origin, helps me a lot
+
+```text
 git config --list --show-origin
 
 file:"C:\\ProgramData/Git/config"       core.symlinks=false
@@ -31,5 +36,4 @@ file:C:/MySDK/Git/mingw64/etc/gitconfig core.editor='C:\Program Files (x86)\Note
 file:C:/Users/Administrator/.gitconfig  gui.recentrepo=C:/Users/Administrator/front-end-dev-book
 file:C:/Users/Administrator/.gitconfig  user.email=
 file:C:/Users/Administrator/.gitconfig  user.name=
-
 ```

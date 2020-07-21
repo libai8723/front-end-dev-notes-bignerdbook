@@ -1,16 +1,18 @@
 ---
 title: Setting Up Your First Project
 date: 2018-06-02
+tag: front-end development, project structure
 ---
 
-Setting Up Your First Project
-==
+## Setting Up Your First Project
 
-## 1. Project Structure ##
+### 1. Project Structure
+
 Setting up the project directories structure.
 
 The book sugget the following directory structure:
-  ```
+
+```text
   ottergram
   |----img
   |     |----otter1.jpg
@@ -22,12 +24,13 @@ The book sugget the following directory structure:
   |----favicon.ico
   ```
 
-## 2. Some Basic HTML Element knowledge ##
+### 2. Some Basic HTML Element knowledge
+
 Initial HTML
 
 A basic knowledge about the html element, content, open and close tag, show as below
 
-```
+```text
             Element
       --------------------------
       |                        |

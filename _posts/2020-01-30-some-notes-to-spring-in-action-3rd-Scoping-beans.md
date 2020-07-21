@@ -199,13 +199,13 @@ xml配置的方式看起来很简单，比如下面就是生成BlankDisc类型�
 
 最简单的SpEL比如 #{1}，我们去掉#{}这个marker，我们会发现只剩下了一个数字常量。这个非常简单，那么下面的就比较有用了
 
-#{T(System).currentTimeMillis()}
+\#{T(System).currentTimeMillis()}
 
 从字面的意思来看，是利用Java的System类里面的currentTimeMillis()函数获得当前系统时间的毫秒的表示形式。
 
 当然SpEL也可以reference to other beans or properties on those beans，比如下面这个表达式
 
-#{sgtPeppers.artist}
+\#{sgtPeppers.artist}
 
 总结以下SpEL就是Spring这个框架自己发明的一套表达式，语法看着有点像Java，估计也就是自己写了表达式的求值引擎，然后求值，没啥特殊的，如果是开源的话，可以研究研究这种表达式引擎要怎么实现。
 

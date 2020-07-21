@@ -1,26 +1,32 @@
-Learn Dojo Hello Course
-===
+---
+title: "Learn Dojo Hello World Course"
+date: 2018-10-14
+tag: Mendix, Dojo, JavaScript
+---
 
-## 1. Background
+## Learn Dojo Hello Course
+
+### 1. Background
 
 For the last 3 days, i was trying to build a mendix widgets that display resource schedule, of course i do not want to build it from scratch. So i used fullcalendar, but sadlly i can not handle the 4 modules 'moment, jQuery, fullcalendar, scheduler', i find that i have very little knowledge about dojo, and AMD, so i decide to learn the dojo tutorial. So this is the 1st course, i want to write some notes about the key point.
 
 and i will maintain a list contains the topics i need to read, just like a queue. I will add the topic when i find interesting ones, and remove the topic when i finish it. and i will assign every item in the list with a number.
 
-## 2. why dojo choose AMD
+### 2. why dojo choose AMD
+
 1. allowing modular web application development.
 2. AMD works with pure JavaScript.
 3. allowing source files to work in browser.
 4. also supporting a build process for producing optimized resources to enhance applicaiton in deployment.
 
-## 3. what is avaiable after dojo.js in loaded
+### 3. what is avaiable after dojo.js in loaded
 
 1. so dojo's AMD loader is avaiable
 2. the loader define two global functions *require*  and *define*.
 3. the require function enables you to load modules and use them
 4. the define function allows you to define your own module.
 
-## 4. We see two baisc modules for dom manipulation
+### 4. We see two baisc modules for dom manipulation
 
 1. dojo/dom
 2. dojo/dom-construct
@@ -58,13 +64,13 @@ with the dojo.js in CDN, it seems that the file is compressed and already includ
 
 with the source files download, you can see a lot of traffic you can see the dependencies hierarchy
 
-## 5. require the directly used module
+### 5. require the directly used module
 
 The AMD loader will automatically load all sub-dependencies for a requested module, so only the modules that you need to use directly should be in your dependency list.
 
 this is interesting.
 
-## 6. Define your own module
+### 6. Define your own module
 
 ```javascript
 define([
@@ -103,26 +109,21 @@ define([
 3. define anonymous function as callback to the define function, so when all the depend modules are loaded ,the anonymous function is called
 4. the anoymous function return a object as the module's interface to the caller/requirer
 
-## 7. load modules in CDNs and locally
+### 7. load modules in CDNs and locally
 
 give a global dojoConfig object. i think the packages property is the key.
 
-## 8. AMD plugin
+### 8. AMD plugin
 
-This is accomplished via a special AMD module called a "plugin". Plugins can be required like any other module, but their special functionality is only activated by adding an exclamation point (bang) to the end of the module identifier. 
+This is accomplished via a special AMD module called a "plugin". Plugins can be required like any other module, but their special functionality is only activated by adding an exclamation point (bang) to the end of the module identifier.
 
-## 9. use the module loading side-effect and do not need a reference to module
+### 9. use the module loading side-effect and do not need a reference to module
 
 In some cases, as with dojo/domReady, we only load a module for its side-effects and do not need a reference to it. The AMD loader has no way of knowing this — it always passes a reference to each module in the dependencies array to the callback function, so any modules for which you do not need to use the return value should be placed at the end of the dependency array, and references to them omitted from the parameter list to the callback function.
 
-
 so here is the total information in *hello dojo*, quite a lot knowledge and let add the topic lists to read to the end chapter.
 
-
-
-
-
-## The Last: Lists of Topic to Read:
+### The Last: Lists of Topic to Read
 
 1. [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD)
 2. [Dojo's AMD tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/modules)

@@ -4,7 +4,6 @@ date: 2019-09-21
 tag: maven
 ---
 
-
 ## 1. Introduction
 
 In this chapter, we introduce a simple project created from scratch using the Maven Archetype plugin. This elementary application provides us with the opportunity to discuss some core concepts while you follow along with the development of the project.
@@ -77,7 +76,7 @@ package org.sonatype.mavenbook;
  * Hello world!
  *
  */
-public class App 
+public class App
 {
     public static void main( String[] args )
     {
@@ -92,6 +91,7 @@ public class App
 简单的build一个工程的方法就是 mvn install
 
 我看到的输出如下：
+
 ```cmd
 [INFO] Installing C:\Users\Q\Desktop\simple\target\simple-1.0-SNAPSHOT.jar to D:\mysdk\.m2\repository\org\sonatype\mavenbook\simple\1.0-SNAPSHOT\simple-1.0-SNAPSHOT.jar
 [INFO] Installing C:\Users\Q\Desktop\simple\pom.xml to D:\mysdk\.m2\repository\org\sonatype\mavenbook\simple\1.0-SNAPSHOT\simple-1.0-SNAPSHOT.pom
@@ -179,6 +179,7 @@ Hello World!
     </dependencies>
 </project>
 ```
+
 比如在这里我们能看到maven的model的版本是4.0.0，也能看到我们的groupId还有artifactId，还有我们的artifact的version是1.0-SNAPSHOT，还能看到我们的打包类型是jar。
 
 name和url都是一些描述性的元素，主要是给人类阅读的。
@@ -186,9 +187,6 @@ name和url都是一些描述性的元素，主要是给人类阅读的。
 而且我们在dependencies这个元素下面看到了唯一一个依赖，值一个test scope的junit的依赖。
 
 所以总的来看这个pom文件非常的简单。但是实际上这个pom文件包含的内容是非常的多的。
-
-
-
 
 这里也提到了一个有趣的事情，就是不仅仅是我们眼前看到的这些属性是POM的属性，也有parent的属性，和Super-POM的属性，以及一些user-defined settings and active profiles.其实我没搞明白什么是active profile，后面继续看把。所有的这些parent POM, Super POM的属性都会充斥到我们的有效的POM张，叫做 effectiv-POM
 

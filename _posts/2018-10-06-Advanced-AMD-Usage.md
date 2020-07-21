@@ -1,15 +1,15 @@
 ---
-title: Advanced AMD Usage
+title: "Advanced AMD Usage"
 date: 2018-10-06
 tag: dojo amd
 ---
 
-[Topic List 10] Advanced AMD Usage
+## [Topic List 10] Advanced AMD Usage
 
-
-## 1. this summarize some of the key point in Advanced AMD Usage
+### 1. this summarize some of the key point in Advanced AMD Usage
 
 suppose we have a application with the following structure:
+
 ```cmd
 /
     index.html
@@ -22,7 +22,7 @@ suppose we have a application with the following structure:
         util/
 ```
 
-## 2. How require function works
+### 2. How require function works
 
 require function accept 3 parameters:
 
@@ -36,21 +36,20 @@ the following is a example of give a configuration object to *require* function:
 
 ```javascript
 require(
-	{
-		baseUrl: "/js/",
-		packages: [
-			{ name: "dojo", location: "//ajax.googleapis.com/ajax/libs/dojo/1.10.4/" },
-			{ name: "my", location: "my" }
-		]
-	},
-	["my/app"]
+    {
+    baseUrl: "/js/",
+        packages: [
+            { name: "dojo", location: "//ajax.googleapis.com/ajax/libs/dojo/1.10.4/" },
+            { name: "my", location: "my" }
+        ]
+    },
+    ["my/app"]
 );
 ```
 
 here we change the baseUrl to */js/*, so the loader will go to /js/my/app to find the module named app, while module dojo will be find in the google CDN, as we described above.
 
-
-## 3. How define works
+### 3. How define works
 
 define function accepts following parameters:
 
@@ -71,21 +70,21 @@ define({
 
 Keep in mind that if you do define a module without using a factory function, you won’t be able to reference any dependencies, so this type of definition is rare and usually only gets used by i18n bundles or simple configuration objects.
 
-## 4. How does the loader works
+### 4. How does the loader works
 
 the basic idea is that: When you call *require* to load some modules, the loader has to find the code for the module and then pass it as a parameter to your callback function so you can use it.
 
 1. First the loader has to resolve the module identifier you passed.
-	-  This involves putting together the baseUrl with the module identifier itself
-	- plus taking into account any modifications required by other configuration options, such as map
+    - This involves putting together the baseUrl with the module identifier itself
+    - plus taking into account any modifications required by other configuration options, such as map
 2. At this point the loader has a URL for the module and can load the actual file by creating a new script element on the page and setting the src attribute to the module's URL. Actually create a **script tag** in the page.
 3. Once the file is loaded and evaluated, its result is set as the value of the module.
 4. The loader maintains a reference to each module, so the next time the module is requested the loader will return the existing reference.
 
-## 5. Some details about the configuring the loader
+### 5. Some details about the configuring the loader
 
 1. baseUrl
-2. tlmSiblingOfDojo 
+2. tlmSiblingOfDojo
 3. packages
 
 when talking to using portable modules:
@@ -112,11 +111,11 @@ define([
 
 in the above code ,the require function will think it lives in the locally bound.
 
-## 6. Handling circular dependencies
+### 6. Handling circular dependencies
 
 this chapter is complicated, i so skiped this chapter.
 
-## 7. Non-AMD Code
+### 7. Non-AMD Code
 
 As mentioned in the section on module identifiers, the AMD loader can also be used to load non-AMD code by passing an identifier that is actually a path to a JavaScript file. The loader identifies these special identifiers in **one of three ways**:
 用三种之中的一种来鉴别是否是non-AMD模式的
@@ -133,18 +132,16 @@ so if i use /js/mylib/jQuery.js to load jQuery lib, it will live in the global s
 
 i think this is the most awesome feature for dojo.
 
-
-
-## The Last: Lists of Topic to Read:
+### The Last: Lists of Topic to Read 
 
 sadlly the todo list becomes longer... let us continue.
 
 1. [1. Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD)
-4. [4. Query](https://dojotoolkit.org/documentation/tutorials/1.10/using_query/) and [Event](https://dojotoolkit.org/documentation/tutorials/1.10/events/)
-5. [5. Ajax](https://dojotoolkit.org/documentation/tutorials/1.10/ajax/)
-6. [6. Template-based Widgets](https://dojotoolkit.org/documentation/tutorials/1.10/templated/)
-7. [7. Dijit Widget](https://dojotoolkit.org/documentation/?ver=1.10#widgets)
-8. [8. Core Concept](https://dojotoolkit.org/documentation/?ver=1.10#coreConcepts)
-9. [9. Feature Detection](http://)
-11. [11. The Dojo Loader: More Details](https://dojotoolkit.org/reference-guide/1.10/loader/amd.html)
-12. [12. Creating Classes use declare](https://dojotoolkit.org/documentation/tutorials/1.10/declare/)
+2. [4. Query](https://dojotoolkit.org/documentation/tutorials/1.10/using_query/) and [Event](https://dojotoolkit.org/documentation/tutorials/1.10/events/)
+3. [5. Ajax](https://dojotoolkit.org/documentation/tutorials/1.10/ajax/)
+4. [6. Template-based Widgets](https://dojotoolkit.org/documentation/tutorials/1.10/templated/)
+5. [7. Dijit Widget](https://dojotoolkit.org/documentation/?ver=1.10#widgets)
+6. [8. Core Concept](https://dojotoolkit.org/documentation/?ver=1.10#coreConcepts)
+7. [9. Feature Detection](http://)
+8. [11. The Dojo Loader: More Details](https://dojotoolkit.org/reference-guide/1.10/loader/amd.html)
+9. [12. Creating Classes use declare](https://dojotoolkit.org/documentation/tutorials/1.10/declare/)

@@ -115,4 +115,4 @@ The presence of interfaces to accomplish the Dependency Inversion Pattern (DIP) 
 * 不应该override一个已经实现的method
 * 所有的对象变量的出实现都需要一个生成模式的实现，例如工厂方法，或者使用一个依赖注入框架
 
-@todo，剩下还有大概60%的内容没看，暂时不看了
+@todo，剩下还有大概60%的内容没看，暂时不看

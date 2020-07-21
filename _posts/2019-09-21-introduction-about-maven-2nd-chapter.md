@@ -4,18 +4,15 @@ date: 2019-09-21
 tag: maven
 ---
 
-The introduction about the maven the 2nd chapter
-====
+## The introduction about the maven the 2nd chapter
 
-
-## 1. Some explanation about plugins
+### 1. Some explanation about plugins
 
 Plugins可不仅仅是减少maven distribution下载体积大小的一个小花招。Plugins为项目的构建（build）添加了新的行为。Maven从远程仓库中同时获取依赖和插件。书中讲了一个Surefire的插件，通过升级POM中的Surefire的版本，我们可以不修改其他的代码就升级单元测试的能力。
 
 Maven针对所有的事情几乎都有对应的插件plugins，从编译java代码，到生成报告，到把应用部署到一个应用服务器，这些都有插件。Maven has abstracted common tasks into plugins which are maintained centrally and shared universally. This is what is meant by universal reuse through Maven Plugins.
 
-
-## 2. Conceptual Model of a "Project"
+### 2. Conceptual Model of a "Project"
 
 Maven maintains a model of a project.我们做项目不仅仅是把java code编译成字节码，我们实际上是开发一个针对软件项目的描述，并且给出一系列唯一的坐标coordinates来表达的这个项目。那么通常来说maven的POM具有以下的特性：
 
@@ -25,7 +22,7 @@ Maven maintains a model of a project.我们做项目不仅仅是把java code编�
 4. Tool Portability/ Integration：自从有了POM的模型之后，像是eclipse，netbeans，IntelliJ现在就可以使用maven的POM文件来理解这个项目了。这就保证了项目在跨tools之间的通用一致性和可移植性。
 5. Easy searching and Filtering of Project Artifacts：有了POM文件之后像是Nexus这样的工具就可以针对一个仓库进行项目的索引和检索了。
 
-## 3. Install Maven on Microsoft Windows.
+### 3. Install Maven on Microsoft Windows
 
 在windows上安装的时候，最简单的办法就是直接去Apache Maven上直接下载最新的稳定的包就可以了，安装其实也就是仅仅是下载和解压缩。在cmd中可以通过以下的方式来变更PATH：
 
@@ -49,7 +46,8 @@ Default locale: zh_CN, platform encoding: GBK
 OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 ```
 
-## 4. User-Specific Configuration and Repository
+### 4. User-Specific Configuration and Repository
+
 因为一些很常见的问题，比如我不想让我的windows的C盘很快的被占据满，比如我还有自己需要使用的私有的maven的仓库，所以基于这些原因我们肯定需要修改Maven的配置的。
 
 Once you start using Maven extensively, you’ll notice that Maven has created some local user-specific configuration files and a local repository in your home directory. In ~/.m2 there will be:
@@ -58,10 +56,12 @@ Once you start using Maven extensively, you’ll notice that Maven has created s
 
 这里的波浪线~指的是用户的home文件夹。一般在linux里面，~指的是/home/username/
 
-在windows 10里面呢，一般指的是 
+在windows 10里面呢，一般指的是
+
 ```cmd
-C:\Users\Q\.m2
+    C:\Users\Q\.m2
 ```
+
 下面是setting.xml文件的解释，还有repository就是本地的仓库的目录了。
 
 ~/.m2/settings.xml
@@ -74,9 +74,9 @@ This directory contains your local Maven repository. When you download a depende
 
 我现在是直接修改了maven安装目录下面conf文件夹下面的setting.xml文件，这样是一种不好的实践。具体的原因如下：
 
-Altering the global settings.xml file in the Maven installation itself is usually unnecessary and it tends to complicate the upgrade procedure for Maven as you’ll have to remember to copy the customized settings.xml from the old Maven installation to the new installation. 
+Altering the global settings.xml file in the Maven installation itself is usually unnecessary and it tends to complicate the upgrade procedure for Maven as you’ll have to remember to copy the customized settings.xml from the old Maven installation to the new installation.
 
-## 5. Getting Help with Maven
+### 5. Getting Help with Maven
 
 http://maven.apache.org
 

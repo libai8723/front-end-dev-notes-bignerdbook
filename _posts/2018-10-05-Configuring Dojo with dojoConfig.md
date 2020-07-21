@@ -1,21 +1,26 @@
-Cofiguring Dojo with dojoConfig
-===
+---
+title: "Configuring Dojo with dojoConfig"
+date: 2018-10-05
+tag: Mendix, Dojo, JavaScript
+---
 
-## 1. one of the getting started series
+## Configuring Dojo with dojoConfig
+
+### 1. one of the getting started series
 
 I think this chapter is important, so i read it first, and it seems important.
 
-## 2. The Global dojoConfig object
+### 2. The Global dojoConfig object
 
 1. The dojoConfig object (known as djConfig prior to Dojo 1.6, they are equivalent) is the primary mechanism for configuring Dojo in a web page or application.
 
 2. The dojoConfig definition must comes before the dojo.js loaded, or else it will be ignored.
 
-3. It is important to note the distinction between dojoConfig and dojo/_base/config. During the bootstrap process, dojo/_base/config is populated from these parameters for later lookup by module code. 
+3. It is important to note the distinction between dojoConfig and dojo/_base/config. During the bootstrap process, dojo/_base/config is populated from these parameters for later lookup by module code.
 
 4. so that is to say parameters in config contains dojoConfig's value.
 
-## 3. dojoConfig Example
+### 3. dojoConfig Example
 
 ```javascript
 <!-- set Dojo configuration, load Dojo -->
@@ -63,13 +68,13 @@ in this example, the author deliveries a lot message. i will list the ones i und
 1. has() used for feature detection. Actually i do not know what is feature detection.so i add this to the list.
 2. Debug/Firebug Lite.
 3. Loader Configuration: see the topic 10 below.
-	1. baseUrl:The base URL prepended to a module identifier when converting it to a path or URL
-	2. packages: An array of objects which provide the package name and location
-	3. map: which i do not understand. @todo
-	4. cacheBust: If true, appends the time as a querystring to each module URL to avoid module caching
-	5. By using the packages configuration, we've made all references to demo/* point to our local directory other than the CDN.
+    1. baseUrl:The base URL prepended to a module identifier when converting it to a path or URL
+    2. packages: An array of objects which provide the package name and location
+    3. map: which i do not understand. @todo
+    4. cacheBust: If true, appends the time as a querystring to each module URL to avoid module caching
+    5. By using the packages configuration, we've made all references to demo/* point to our local directory other than the CDN.
 
-## 5. Locale and internationalization Exmaple:
+### 5. Locale and internationalization Exmaple
 
 here is the code:
 
@@ -110,27 +115,25 @@ here is the code:
 
 with this exmaple, you can see the locale module also read the configuration from the dojoConfig:
 
-
 1. window.location.search is the URL parameter, so we can test the page with different URL parameter.
+
 ```javascript
 locale: location.search.match(/locale=([\w\-]+)/) ? RegExp.$1 : "en-us";
 ```
+
 2. This example is totally programmatically, the dialog is created in the call function, and placed with the dojo/_base/window module. Seems cool.
 
-
-
-
-## The Last: Lists of Topic to Read:
+## The Last: Lists of Topic to Read
 
 sadlly the todo list becomes longer... let us continue.
 
 1. [1. Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD)
 2. [2. Dojo's AMD tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/modules)
-4. [4. Query](https://dojotoolkit.org/documentation/tutorials/1.10/using_query/) and [Event](https://dojotoolkit.org/documentation/tutorials/1.10/events/)
-5. [5. Ajax](https://dojotoolkit.org/documentation/tutorials/1.10/ajax/)
-6. [6. Template-based Widgets](https://dojotoolkit.org/documentation/tutorials/1.10/templated/)
-7. [7. Dijit Widget](https://dojotoolkit.org/documentation/?ver=1.10#widgets)
-8. [8. Core Concept](https://dojotoolkit.org/documentation/?ver=1.10#coreConcepts)
-9. [9. Feature Detection](http://)
-10. [10. Advanced AMD Usage tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/modules_advanced/)
-11. [The Dojo Loader: More Details](https://dojotoolkit.org/reference-guide/1.10/loader/amd.html)
+3. [4. Query](https://dojotoolkit.org/documentation/tutorials/1.10/using_query/) and [Event](https://dojotoolkit.org/documentation/tutorials/1.10/events/)
+4. [5. Ajax](https://dojotoolkit.org/documentation/tutorials/1.10/ajax/)
+5. [6. Template-based Widgets](https://dojotoolkit.org/documentation/tutorials/1.10/templated/)
+6. [7. Dijit Widget](https://dojotoolkit.org/documentation/?ver=1.10#widgets)
+7. [8. Core Concept](https://dojotoolkit.org/documentation/?ver=1.10#coreConcepts)
+8. [9. Feature Detection](http://)
+9. [10. Advanced AMD Usage tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/modules_advanced/)
+10. [The Dojo Loader: More Details](https://dojotoolkit.org/reference-guide/1.10/loader/amd.html)

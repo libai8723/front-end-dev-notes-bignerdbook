@@ -1,7 +1,8 @@
 ---
 title: "微服务架构实战-第三章" 
-date: 2020-07-20
+date: 2020年07月20日
 tag: MicroService in Action, Spring Boot
+excerpt: "阅读微服务架构实战这本书的第三章"
 ---
 
 尝试在二级标题之前写一段话进行简述
@@ -16,7 +17,7 @@ tag: MicroService in Action, Spring Boot
 
 ![创建一个新的SpringBoot的应用，使用Intellij](/front-end-dev-notes-bignerdbook/assets/img/CreateAnNewSpringBootProject.png)
 
-在经过昨天晚上的一系列的折腾之后，发现用intellij来创建spring boot的工程有点曲折，可能是因为 https://start.spring.io 的网站访问比较慢，或者是因为我在intellij中的spring initializer中选择版本比较高的原因，总是在build的时候出来一些warning或者是例如 spring-boot-maven-plugin无法在aliyun的repo中找到的问题，所以我改为使用STS了，感觉没必要在工具上花太多的时间。
+在经过昨天晚上的一系列的折腾之后，发现用intellij来创建spring boot的工程有点曲折，可能是因为 [start spring io](https://start.spring.io) 的网站访问比较慢，或者是因为我在intellij中的spring initializer中选择版本比较高的原因，总是在build的时候出来一些warning或者是例如 spring-boot-maven-plugin无法在aliyun的repo中找到的问题，所以我改为使用STS了，感觉没必要在工具上花太多的时间。
 
 STS创建的工程和Intellij创建的工程是一样的，因为两者都是maven的工程，但是我目前还没搞明白，maven wrapper是干啥的@todo
 
@@ -24,68 +25,70 @@ STS创建的工程和Intellij创建的工程是一样的，因为两者都是mav
 
 ```xml
     <parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.1.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	
-	<groupId>io.github.libai8723.springboot</groupId>
-	<artifactId>chapter-03-01</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>chapter-03-01</name>
-	<description>Demo project for Spring Boot</description>
+    <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>io.github.libai8723.springboot</groupId>
+    <artifactId>chapter-03-01</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>chapter-03-01</name>
+    <description>Demo project for Spring Boot</description>
 ```
+
 这个和之前学习maven的时候差不多，主要是parent这个元素在spring boot中起到了重要的作用，把该设置的东西基本都设置好了。@todo，所以我之前学习maven的课程要赶紧完结了，因为还没学习多module的maven工程，以及带有parent元素的工程的原理。
 
 那么我们来看看其他的依赖吧：
 
 ```xml
     <dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
 ```
+
 从依赖关系来看，也就是我们在Spring Initilizer中选择的组建，spring web，dev tools，还有一个内置的数据库h2。 可能因为工程认为测试非常重要，所以默认增加spring-boot-starter-test的依赖，但是排除掉org.junit.vintage的依赖了，这也是maven的用法，而且这里面的依赖中都没有指定version的信息，@todo，看看是不是在parent里面都指定了呢？
 
 我们再看看build的元素
 
 ```xml
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 ```
 
 之前我以为build没有什么说道的，但是后来仔细研究了一下发现Fat Jar还是非常有讲究的，为了能把Jar文件引入Jar文件作为依赖，还是需要自己实现class loader的，所以这里的spring-boot-maven-plguin就是干这个事情的，非常有用。因为按照Oracle的Jar的规范，nested jar是不被支持的，只能自己实现class loader的这些机制。@todo，所以看到这里的话，其实还需要了解一下maven的插件是如何编写的。
 
-@todo，之前的链接找不到了，有时间的话，先看这个链接吧：https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/maven-plugin/reference/html/
+@todo，之前的链接找不到了，有时间的话，先看这个链接吧：[ref to spring boot maven plugin](https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/maven-plugin/reference/html/)

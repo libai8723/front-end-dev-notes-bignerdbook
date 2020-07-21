@@ -1,12 +1,12 @@
 ---
 title: Install plug-ins to ATOM editor
 date: 2018-06-01
+tag: front-end development, atom
 ---
 
-First : installed plug-ins:
-====
+## First : installed plug-ins
 
-## 1. The Plugin List ##
+### 1. The Plugin List
 
   1. emmet: for editing HTML
   2. atom-beautify: for better display various kinds of source code
@@ -21,15 +21,16 @@ First : installed plug-ins:
     5.2 linter-eslint:
     5.3 linter-htmlhint: i do not know why this plug-in is called hint but not lint
 
-## 2. Something about the docs ##
+### 2. Something about the docs
 
   1. The Mozilla Developer Network: you have two ways to access it:
-    1.1 https://devdocs.io and i believe that is so cool about this site
-    1.2 https://developer.mozilla.org
+    1.1 [https://devdocs.io](https://devdocs.io) and i believe that is so cool about this site
+    1.2 [https://developer.mozilla.org](https://developer.mozilla.org)
 
-## 3. Something called crash course on CLI, which i think i don't need. ##
+### 3. Something called crash course on CLI, which i think i don't need
 
-## 4. Forth: Install Node.js, which i already done by yesterday
+### 4. Forth: Install Node.js, which i already done by yesterday
+
   1. Node.js i think is a runtime for JavaScript
   2. browser-sync is a tool based on Node.js,  It makes your example code easier
      to run in the browser and automatically reloads the browser when you save
@@ -43,9 +44,11 @@ First : installed plug-ins:
   3. So i use atom finished editing a index.html file, and now to see the result.
   4. Sees pretty cool, and i added an favicon.ico file, makes html page seems
      even better.
-## 5. browser-sync Usage ##
+
+### 5. browser-sync Usage
+
   1. Just type:
-    browser-sync start --server --files "stylesheet/*.css *.html"
+    browser-sync start --server --files "stylesheet/\*.css \*.html"
 
   but the above command does not do the live reload work for me, so i checked the
   browser-sync help usage, there is a command called --watch, when i add this on,

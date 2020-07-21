@@ -51,7 +51,7 @@ Default Lifecycle:
 
 Phase | Description
 ---------- | --------
-validate | 	validate the project is correct and all necessary information is available.
+validate | validate the project is correct and all necessary information is available.
 initialize | initialize build state, e.g. set properties or create directories.
 generate-sources | generate any source code for inclusion in compilation. 居然可以生成代码
 process-sources | process the source code, for example to filter any values
@@ -85,7 +85,6 @@ site | generate the project's site documentation
 post-site | execute processes needed to finalize the site generation, and to prepare for site deployment
 site-deploy | deploy the generated site documentation to the specified web server
 
-
 看到这一步的描述，终于知道为什么叫site了，因为原来的hacker还是比较有操守的，大家发布了库之后，还有对应的站点来承载相应的文档，所以叫site
 
 下面是default lifecycle中常见的build phases的名字和解释：
@@ -107,7 +106,6 @@ site-deploy | deploy the generated site documentation to the specified web serve
 * verify - 这个环节其实是做集成测试的，也就是说可以在这个环节完成部署后的测试，来确保质量要求达标
 * install - 把构建出来的包安装到本地仓库中，从而可以在其他项目中使用这个依赖
 * deploy - 在开发环境中完成上述的所有事情之后，把最终的产物package拷贝到远程的仓库中，从而可以让其他的项目和开发者来共享。
-
 
 These lifecycle phases (plus the other lifecycle phases not shown here) are executed sequentially to complete the default lifecycle. Given the lifecycle phases above, this means that when the default lifecycle is used, Maven will first validate the project, then will try to compile the sources, run those against the tests, package the binaries (e.g. jar), run integration tests against that package, verify the integration tests, install the verified package to the local repository, then deploy the installed package to a remote repository.
 
