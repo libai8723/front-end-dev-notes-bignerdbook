@@ -8,7 +8,7 @@ and i think the Github Pages is perfect for hosting such a personal log. On 2019
 
 
 ## Useful link ##
-[Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
+[Mastering Markdown](https://guides.github.com/features/mastering-markdown/) [jekyllrb doc](https://jekyllrb.com/docs/posts/)
 
 ## Post Entries ##
 <ol>
