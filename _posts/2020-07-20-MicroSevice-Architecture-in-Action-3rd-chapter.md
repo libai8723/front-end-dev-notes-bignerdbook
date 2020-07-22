@@ -1,10 +1,12 @@
 ---
 title: "微服务架构实战-第三章" 
 date: 2020-07-20
-tag: MicroService in Action, Spring Boot
+tag: "微服务架构实战"
+excerpt_separator: <!--more-->
 ---
 
 微服务架构实战第三章主要介绍Spring boot和集成其他开源三方件的便利之处，所以才会有这个标题
+<!--more-->
 
 ## 第三章 微服务之Spring Boot
 
@@ -91,3 +93,65 @@ STS创建的工程和Intellij创建的工程是一样的，因为两者都是mav
 之前我以为build没有什么说道的，但是后来仔细研究了一下发现Fat Jar还是非常有讲究的，为了能把Jar文件引入Jar文件作为依赖，还是需要自己实现class loader的，所以这里的spring-boot-maven-plguin就是干这个事情的，非常有用。因为按照Oracle的Jar的规范，nested jar是不被支持的，只能自己实现class loader的这些机制。@todo，所以看到这里的话，其实还需要了解一下maven的插件是如何编写的。
 
 @todo，之前的链接找不到了，有时间的话，先看这个链接吧：[ref to spring boot maven plugin](https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/maven-plugin/reference/html/)
+
+下面我们看一下代码吧。但是在看代码之前，我们还是应该简单说明一下，Java Annotation的意义，其实在Oralce的官方文档中是有针对Java Annotation的专门的讲解的，但是我却从没有完成过阅读，可能比较难吧。@todo
+
+[Java Annotation](https://docs.oracle.com/javase/tutorial/java/annotations/)
+
+但是有时间的话，大家都应该学习一下基本的注解的知识，因为注解配合上反射，能做出来非常多非常强大的东西，我说的就是框架。因为有非常多框架是利用反射的机制来扫描classpath下面的类，分析类中的注解来完成类的实例化和初始化的，这个非常重要。
+
+那么我们看一下代码吧：
+
+```java
+package io.github.libai8723.springboot.chapter0301;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@SpringBootApplication
+public class Chapter0301Application {
+    @RequestMapping("/")
+    public String home() {
+        return "Hello, World! and the rest of the world";
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(Chapter0301Application.class, args);
+    }
+}
+```
+
+和原书的有一些区别，原书的代码是 @EnableAutoConfiguration的注解，而使用Spring Boot Initializer生成的代码默认使用的是@SpringBootApplication的注解，那么我们看一下区别是什么：
+
+从@SpringBootApplication的java doc来看，它是包含了下面的若干个注解：
+
+```java
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan(excludeFilters={@Filter(type=CUSTOM, classes={TypeExcludeFilter.class}), @Filter(type=CUSTOM, classes={AutoConfigurationExcludeFilter.class})})
+@Target(value={TYPE})
+@Retention(value=RUNTIME)
+@Documented
+@Inherited
+```
+
+其中就包含了@EnableAutoConfiguration，这其实就是在前面的博客中提到的自定义注解的用法。
+
+除此之外还有一个@RestController的注解，它是下面的注解的集合
+
+```java
+@Target(value={TYPE})
+@Retention(value=RUNTIME)
+@Documented
+@Controller
+@ResponseBody
+```
+
+其中 @Controller 又包含了 @Component 注解，按照Controller的javadoc的解释来看，这个注解表明自己是一个是作为一个Component的特殊形式对外提供服务的，因为是一个特殊形式的Component，所以可以被autodetect机制发现，并被初始化为bean，通常和被@RequestMapping标记的handler methods一起使用。
+
+这里@RestController还包含了@ResponseBody的注解，这个注解的含义是说，一个handler method的返回值应该被bind to 对应的web response body，于是就不需要按照返回值去找对应的view了，从4.0版本开始，这个注解可以被增加到Type级别，这种情况下，所有的类方法都继承了这个特性。
+
+@todo
