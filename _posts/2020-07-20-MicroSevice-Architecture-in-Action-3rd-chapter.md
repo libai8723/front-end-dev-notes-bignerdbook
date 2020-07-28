@@ -155,3 +155,5 @@ public class Chapter0301Application {
 这里@RestController还包含了@ResponseBody的注解，这个注解的含义是说，一个handler method的返回值应该被bind to 对应的web response body，于是就不需要按照返回值去找对应的view了，从4.0版本开始，这个注解可以被增加到Type级别，这种情况下，所有的类方法都继承了这个特性。
 
 @todo
+
+要看的东西还是非常多的，比如spring core的知识，怎么完成DI的，这些需要看，例如BeanFactory的原理等等，我在淘宝上还找到了一本书《Spring技术内幕——深入解析Spring架构与设计原理》看到里面对于DI讲解的真的不错，应该买来看一下，但是目前，进度最重要，继续往前看。
