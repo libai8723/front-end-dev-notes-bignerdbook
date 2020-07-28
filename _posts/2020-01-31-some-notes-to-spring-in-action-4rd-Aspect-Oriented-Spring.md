@@ -112,4 +112,27 @@ When a meter reader starts his day, he knows both what he’s supposed to do (re
 
 An aspect is the merger of advice and pointcuts. Taken together, advice and pointcuts define everything there is to know about an aspect—what it does and where and when it does it.
 
-@todo 2020-05-11 07:53
+当一个抄表员开始工作的时候（**WHEN**），他既知道他应该做什么（**WHAT**），也知道在那里做（pointut，aka **WHERE**），那么这个抄表员就知道了一切他需要知道的事情，就可以开始愉快的干活了。
+
+一个Aspect就是Advice和PointCuts的结合。当把两者结合起来的时候，关于一个aspect的所有事情都定义清楚了
+
+
+#### INTRODUCTIONS（引入）
+
+An **introduction** allows you to add new methods or attributes to existing classes. For example, you could create an **Auditable** advice class that keeps the state of when an object was last modified. This could be as simple as having one method, setLast-Modified(Date), and an instance variable to hold this state. The new method and instance variable can then be introduced to existing classes without having to change them, giving them new behavior and state.
+
+一个引入，允许我们针对一个已经存在的类来增加方法和属性。例如，我们可以创建一个就叫做 Auditable 的 Advice的类，来跟踪一个对象的最后被更改的状态。可以非常简单的实现这个方案，例如在这个advice class中保有一个方法和一个instance var。这个方法和实例变量都可以被引入到现存的类中，而不需要我们去改变他们，从而赋予这个对象新的行为和状态。
+
+#### WEAVING（织入）
+
+Weaving is the process of applying aspects to a target object to create a new proxied object. The aspects are woven into the target object at the specified join points. The weaving can take place at several points in the target object’s lifetime:
+
+织入是把aspects应用到目标对象从而创建一个新的代理对象的过程。切面被织入目标对象，在特定的join points上（所谓特定的Joint Point其实也就是Point Cut了），织入这个动作本身可以发生在目标对象的生命周期的很多点上：
+
+* Compile time—Aspects are woven in when the target class is compiled. This requires a special compiler. AspectJ’s weaving compiler weaves aspects this way.
+* Class load time—Aspects are woven in when the target class is loaded into the JVM . This requires a special ClassLoader that enhances the target class’s byte-code before the class is introduced into the application. AspectJ 5’s load-time weaving ( LTW ) support weaves aspects this way.
+* Runtime—Aspects are woven in sometime during the execution of the application. Typically, an AOP container dynamically generates a proxy object that delegates to the target object while weaving in the aspects. This is how Spring AOP aspects are woven.
+
+1. 编译时，需要特定的编译器，例如AspectJ的编译器。
+2. 类加载时，这个需要特定的class loader
+3. 运行时。通常来说，AOP的容器会在weaving的时候，动态的创建一个代理对象，代理到目标对象上。这就是Spring AOP的实现方式
