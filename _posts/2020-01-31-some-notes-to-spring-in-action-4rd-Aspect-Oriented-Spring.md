@@ -116,7 +116,6 @@ An aspect is the merger of advice and pointcuts. Taken together, advice and poin
 
 一个Aspect就是Advice和PointCuts的结合。当把两者结合起来的时候，关于一个aspect的所有事情都定义清楚了
 
-
 #### INTRODUCTIONS（引入）
 
 An **introduction** allows you to add new methods or attributes to existing classes. For example, you could create an **Auditable** advice class that keeps the state of when an object was last modified. This could be as simple as having one method, setLast-Modified(Date), and an instance variable to hold this state. The new method and instance variable can then be introduced to existing classes without having to change them, giving them new behavior and state.
@@ -136,3 +135,42 @@ Weaving is the process of applying aspects to a target object to create a new pr
 1. 编译时，需要特定的编译器，例如AspectJ的编译器。
 2. 类加载时，这个需要特定的class loader
 3. 运行时。通常来说，AOP的容器会在weaving的时候，动态的创建一个代理对象，代理到目标对象上。这就是Spring AOP的实现方式
+
+### Spring's AOP Support
+
+Not all AOP frameworks are created equal. They may differ in how rich their join point models are. Some allow you to apply advice at the field-modification level, whereas others only expose the join points related to method invocations. They may also differ in how and when they weave the aspects. Whatever the case, the ability to create pointcuts that define the join points at which aspects should be woven is what makes it an AOP framework.
+
+并不是所有的AOP框架都是生而平等的。它们的主要的区别在于他们支持的join point的丰富程度。有些框架允许你在field-modification级别应用advice，而有些框架只能提供与方法调用相关的joint points。同时区别也在于这些aspects在什么时候，以怎样的方式被框架weave in。 排除无论林林总总这些区别，创建point cuts并且定义哪些joint points需要被woven in的能力，这个能力让我们讨论的东西成为了一个AOP框架。
+
+Spring’s support for AOP comes in four styles:
+
+* Classic Spring proxy-based AOP
+* Pure- POJO aspects
+* @AspectJ annotation-driven aspects
+* Injected AspectJ aspects (available in all versions of Spring)
+
+spring框架支持4种形式的AOP：
+
+1. 经典的Spring基于proxy的AOP
+2. 纯粹的POJO的切面
+3. 采用@AspectJ注解驱动的切面
+4. 直接注入AspectJ的切面
+
+其实前三种都是Spring关于AOP的不同的实现方式，Spring AOP是基于dynamic proxy实现的，也就意味着只能支持method调用级别的切面。
+
+第一种我们称之为经典的Spring AOP在它出现的时代，无疑是先进的，但是和后来声明式切面，和基于注解驱动的切面比较的时候，就会发现异常的繁琐和难以理解。所以我们不讨论classic Spring AOP
+
+With Spring’s aop **namespace**, you can turn pure POJO s into aspects. In truth, those POJO s will only supply methods that are called in reaction to a pointcut. Unfortunately, this technique requires XML configuration, but it’s an easy way to declaratively turn any object into an aspect.
+
+这里为什么要强调 **namespace**，是因为 namespace是xml中的概念，所以这里说的是基于xml的声名式的切面，确实在这种模式下，POJO之需要提供对应pointcut的相应函数就可以了，剩下的事情就交给XML配置文件了，但是很不幸，很多人不喜欢配置XML，但是实话实说这是一种很简单的把POJO变成切面的方式。
+
+![Spring AOP Runtime Proxy](/front-end-dev-notes-bignerdbook/assets/img/Spring-AOP-Runtime-Proxy.png)
+
+上面的图片很好的说明了Spring中面向切面是怎么实现的。
+
+In Spring, aspects are woven into Spring-managed beans at runtime by wrapping them with a proxy class. As illustrated in figure 4.3, the proxy class poses as the target bean, intercepting advised method calls and forwarding those calls to the target bean.
+Between the time when the proxy intercepts the method call and the time when it invokes the target bean’s method, the proxy performs the aspect logic. Spring doesn’t create a proxied object until that proxied bean is needed by the application. If you’re using an **ApplicationContext**, the proxied objects will be created when it loads all the beans from the **BeanFactory**. Because Spring creates proxies at runtime, you don’t need a special compiler to weave aspects in Spring’s AOP.
+
+在Spring中，切面是在运行时的时候被weave into被spring管理的beans中的，这里说weave into beans有点不太贴切，因为实际上是使用一个prxoy类来包裹这个beans。就和上图中描述的一样，这个代理类被暴露出来当作这个目标bean，这个代理类会拦截advised method的调用，并且把这些调用转发到真正的目标bean，在代理类拦截调用和代理类调用它包裹的目标bean的方法之间，这个代理类会执行切面的逻辑。Spring会把创建代理对象的时间延迟直到程序需要这个代理类。如果我们使用的是一个 **ApplicationContext** 那么代理对象会在 **Context** 从 **BeanFactory** 加载所有的Beans的时候创建这些代理类。
+
+@todo
