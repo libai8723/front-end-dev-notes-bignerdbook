@@ -173,4 +173,28 @@ Between the time when the proxy intercepts the method call and the time when it 
 
 在Spring中，切面是在运行时的时候被weave into被spring管理的beans中的，这里说weave into beans有点不太贴切，因为实际上是使用一个prxoy类来包裹这个beans。就和上图中描述的一样，这个代理类被暴露出来当作这个目标bean，这个代理类会拦截advised method的调用，并且把这些调用转发到真正的目标bean，在代理类拦截调用和代理类调用它包裹的目标bean的方法之间，这个代理类会执行切面的逻辑。Spring会把创建代理对象的时间延迟直到程序需要这个代理类。如果我们使用的是一个 **ApplicationContext** 那么代理对象会在 **Context** 从 **BeanFactory** 加载所有的Beans的时候创建这些代理类。
 
-@todo
+@todo 所以我们还是要搞明白BeanFactory和ApplicationContext的关系是什么。
+
+### Selecting join points with pointcuts（使用pointcut来选择joint point）
+
+In Spring AOP , pointcuts are defined using AspectJ’s pointcut expression language.
+
+其实Spring AOP使用的是AspectJ的 pointcut expression language，但是受限于Spring AOP的要求，在Spring中仅仅使用AspectJ的pointcut expression language的一个子集。
+
+Table 4.1 lists the AspectJ pointcut designators that are supported in Spring AOP
+
+AspectJ designator | Description
+-------- |  -------
+args()  |  Limits join-point matches to the execution of methods whose arguments are instances of the given types
+args()  |  把joint-point限制在被执行的方法的参数与给定的类型匹配的子集上
+@args()  |  Limits join-point matches to the execution of methods whose arguments are annotated with the given annotation types 
+@args()  |  把joint-point限制在被执行的方法的参数是使用给定的注解来注解的子集上
+execution()  |  Matches join points that are method executions
+execution()  |  匹配所有的方法执行的join points
+this()  |  Limits join-point matches to those where the bean reference of the AOP proxy
+is of a given type
+this()  |  @todo 完全没有看懂this()
+target()  |  Limits join-point matches to those where the target object is of a given type
+target()  |  按照给定的类型来筛选joint-point
+@target() |  Limits matching to join points where the class of the executing object has an annotation of the given type
+@target() |  按照执行对象的class有给定的注解来筛选joint point
