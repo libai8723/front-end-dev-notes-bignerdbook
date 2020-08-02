@@ -183,18 +183,91 @@ In Spring AOP , pointcuts are defined using AspectJ’s pointcut expression lang
 
 Table 4.1 lists the AspectJ pointcut designators that are supported in Spring AOP
 
-AspectJ designator | Description
+AspectJ designator（指示符） | Description
 -------- |  -------
 args()  |  Limits join-point matches to the execution of methods whose arguments are instances of the given types
 args()  |  把joint-point限制在被执行的方法的参数与给定的类型匹配的子集上
-@args()  |  Limits join-point matches to the execution of methods whose arguments are annotated with the given annotation types 
+@args()  |  Limits join-point matches to the execution of methods whose arguments are annotated with the given annotation types
 @args()  |  把joint-point限制在被执行的方法的参数是使用给定的注解来注解的子集上
 execution()  |  Matches join points that are method executions
 execution()  |  匹配所有的方法执行的join points
-this()  |  Limits join-point matches to those where the bean reference of the AOP proxy
-is of a given type
+this()  |  Limits join-point matches to those where the bean reference of the AOP proxy is of a given type
 this()  |  @todo 完全没有看懂this()
 target()  |  Limits join-point matches to those where the target object is of a given type
 target()  |  按照给定的类型来筛选joint-point
 @target() |  Limits matching to join points where the class of the executing object has an annotation of the given type
 @target() |  按照执行对象的class有给定的注解来筛选joint point
+within()  |  Limits matching to join points within certain types
+@within() |  Limits matching to join points within types that have the given annotation (the execution of methods declared in types with the given annotation when using Spring AOP)
+@annotation  | Limits join-point matches to those where the subject of the join point has the given annotation
+
+这些指示符不知道是干啥的。因为我没用过aspectJ
+
+继续看第一个AOP的例子吧，上面的这些指示符，早晚有一天都用过一次就知道怎么用了。
+
+我们第一个用到的例子是：
+
+```java
+execution(* concert.Performance.perform(..))
+```
+
+其中execution是上面表格中提到的指示符，说明我们要选择的是method的执行，来作为pointcut的指示符。
+
+括号里面的表达式也比较简单，第一个 * 表示的是意思是任何返回值，然后concert.Performance是包名称和类名称。
+
+然后后面跟随的是类中间的method的名称，(..)的意思是匹配任何参数的意思，这样的话就是所有的concert.Performance下面的所有名字叫做perform的函数了.
+
+然后在定义PointCut的时候我们使用了@Before的注解,还有@After的注解，但是对应的expression写的都是一模一样的表达式。这样就显得非常的罗嗦了，于是作者就介绍了一个方法，使用@PointCut注解来扩展PointCut Expression的能力：
+
+具体就是下面的代码了：
+
+```java
+@Aspect
+public class Audience {
+    /**
+     * The value given to the @Pointcut annotation is a pointcut expression, just like the ones you
+     * used previously with the advice annotations. By annotating performance() with @Pointcut in this way,
+     * you essentially extend the pointcut expression language so that
+     * you can use performance() in your pointcut expressions anywhere you’d otherwise
+     * use the longer expression. As you can see, you replace the longer expression in all the
+     * advice annotations with performance().
+     *
+     * The body of the performance() method is irrelevant and, in fact, should be
+     * empty. The method itself is just a marker, giving the @Pointcut annotation something
+     * to attach itself to
+     */
+    @Pointcut(value = "execution(* io.github.libai8723.Performance.perform(..))")
+    public void performance() {}
+
+    // the same meaning with the longer expression
+    @Before("performance()")
+    public void silenceCellPhones() {
+        System.out.println("Silencing cell phones");
+    }
+
+    @Before("performance()")
+    public void takeSeats() {
+        System.out.println("Taking seats");
+    }
+
+    @AfterReturning("performance()")
+    public void applause() {
+        System.out.println("CLAP CLAP CLAP!!!");
+    }
+    @AfterThrowing("performance()")
+    public void demandRefund() {
+        System.out.println("Demanding a refund");
+    }
+}
+
+```
+
+首先这的 @Aspect表明当前的类是一个且面Aspect，关于@PointCut的注解可以详细的看看上面代码中的注释，就是原书文字的拷贝，这里讲解的还是非常好的。既然写的非常好，那我还是翻译一下吧：
+
+In Audience, the performance() method is annotated with @Pointcut. The value given to the @Pointcut annotation is a pointcut expression, just like the ones you used previously with the advice annotations. By annotating performance() with @Pointcut in this way, you essentially extend the pointcut expression language so that you can use performance() in your pointcut expressions anywhere you’d otherwise use the longer expression. As you can see, you replace the longer expression in all the advice annotations with performance().
+
+在上面的代码中, 我们注解的performance函数使用的是@PointCut注解,给到这个注解的值和之前的代码是相同的.当我们使用这种方式进行注解的时候,我们实际上扩展了point cut expression language, 以至于我们可以使用 performance()在我们其他的需要使用pointcut expression的地方来代替在@PointCut中的至,这样可以让我们少写非常多的同样的注解的代码.
+
+The body of the performance() method is irrelevant and, in fact, should be empty. The method itself is just a marker, giving the @Pointcut annotation something to attach itself to. Note that aside from the annotations and the no-op performance() method, the Audience class is essentially a POJO . Its methods can be called just like methods on any other Java class. Its methods can be individually unit-tested just as in any other Java class. Audience is just another Java class that happens to be annotated to be used as an aspect.
+
+我们可以看到performance函数的body是空的,实际上也应该如此,因为这个body实际上没有任何用途,method本身就是一个标记而已,用来给到@Pointcut这个注解一个可以注解的东西. 我们可以注意到除了这个毫无用途的函数之外,整个Audience类就是一个POJO,它的方法可以像其他java类一样被调用, 这样被单元测试起来也是很方便的. 或者我们应该反过来说,Audience类仅仅是一个POJO, 只是恰好被使用了一个且面的注解进行了注解.
