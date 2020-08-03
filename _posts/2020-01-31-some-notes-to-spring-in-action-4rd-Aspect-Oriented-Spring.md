@@ -271,3 +271,94 @@ In Audience, the performance() method is annotated with @Pointcut. The value giv
 The body of the performance() method is irrelevant and, in fact, should be empty. The method itself is just a marker, giving the @Pointcut annotation something to attach itself to. Note that aside from the annotations and the no-op performance() method, the Audience class is essentially a POJO . Its methods can be called just like methods on any other Java class. Its methods can be individually unit-tested just as in any other Java class. Audience is just another Java class that happens to be annotated to be used as an aspect.
 
 我们可以看到performance函数的body是空的,实际上也应该如此,因为这个body实际上没有任何用途,method本身就是一个标记而已,用来给到@Pointcut这个注解一个可以注解的东西. 我们可以注意到除了这个毫无用途的函数之外,整个Audience类就是一个POJO,它的方法可以像其他java类一样被调用, 这样被单元测试起来也是很方便的. 或者我们应该反过来说,Audience类仅仅是一个POJO, 只是恰好被使用了一个且面的注解进行了注解.
+
+剩下的时间就简单了, 因为现在看的还是SIA 4th的内容, 大部分内容还是需要自己手工去配置的, 不像现在的Spring Boot, 所以采用Java Congifuration的方式, 增加一个配置类:
+
+```java
+@Configuration
+@ComponentScan
+@EnableAspectJAutoProxy
+public class ConcertConfig {
+
+    public static void main(String[] args) {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext("io.github.libai8723");
+        Performance p = (Performance) ctx.getBean("music");
+        p.perform();
+    }
+
+    @Bean
+    public Audience audience() {
+        return new Audience();
+    }
+}
+```
+
+这里的@Configuration和@ComponentScan都是老生畅常谈了, 表明自己是一个配置类, 表明要启用自动化的Component搜索, 第三个注解第一次见到  @EnableAspectJAutoProxy据说增加了这个才有用. 
+
+然后我看了一下 @EnableAspectJAutoProxy的文档, 解答了我心中的一个问题, 就是书上的代码, 针对Audience这个切面, 在配置类中使用 @Bean 注解 方法的方式来告诉Context需要初始化一个实例, 但是对于Music这个类来说, 却是使用的是在class级别注解一个 @Component 来告诉Context需要初始化一个实例, 前后看着不一致的感觉.
+
+于是在@EnableAspectJAutoProxy的文档中,看到下面的描述:
+
+```java
+/*
+ * Enables support for handling components marked with AspectJ's @Aspect annotation, 
+ * similar to functionality found in Spring's <aop:aspectj-autoproxy> XML element. 
+ * To be used on @Configuration classes as follows:
+ */
+   @Configuration
+   @EnableAspectJAutoProxy
+   public class AppConfig {
+  
+       @Bean
+       public FooService fooService() {
+           return new FooService();
+       }
+  
+       @Bean
+       public MyAspect myAspect() {
+           return new MyAspect();
+       }
+   }
+
+// Where FooService is a typical POJO component and MyAspect is an @Aspect-style aspect:
+
+   public class FooService {
+  
+       // various methods
+   }
+   @Aspect
+   public class MyAspect {
+  
+       @Before("execution(* FooService+.*(..))")
+       public void advice() {
+           // advise FooService methods as appropriate
+       }
+   }
+
+// In the scenario above, @EnableAspectJAutoProxy ensures that MyAspect will be properly processed and that FooService will be proxied mixing in the advice that it contributes.
+// Users can control the type of proxy that gets created for FooService using the proxyTargetClass() attribute. The following enables CGLIB-style 'subclass' proxies as opposed to the default 
+// interface-based JDK proxy approach.
+```
+
+从这个代码可以看出全部都使用@Bean的注解,是可以的. 代码的注释里面也有对应的全都使用全自动扫描的方式的书写方式
+
+```java
+// Note that @Aspect beans may be component-scanned like any other. Simply mark the aspect with both @Aspect and @Component:
+   package com.foo;
+  
+   @Component
+   public class FooService { ... }
+  
+   @Aspect
+   @Component
+   public class MyAspect { ... }
+// Then use the @ComponentScan annotation to pick both up:
+   @Configuration
+   @ComponentScan("com.foo")
+   @EnableAspectJAutoProxy
+   public class AppConfig {
+// no explicit @Bean definitions required
+   }
+```
+
+上面的代码也是没有问题的, 但是需要在注解@Aspect的类上面增加一个@Component的注解, 执行效果是一样的.
