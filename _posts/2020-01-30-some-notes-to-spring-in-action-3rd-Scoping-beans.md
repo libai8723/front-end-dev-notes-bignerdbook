@@ -1,7 +1,7 @@
 ---
 title: "Some notes to Spring in Action 4th edition 3rd chapter - Scoping Beans" 
 date: 2020-01-30
-tag: Spring, Scoping Beans
+tag: "Spring in Action 4th edition"
 ---
 
 ## Advanced Wiring

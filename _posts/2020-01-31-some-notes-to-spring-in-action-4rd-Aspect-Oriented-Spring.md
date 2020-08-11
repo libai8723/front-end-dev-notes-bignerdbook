@@ -1,7 +1,7 @@
 ---
 title: "Some notes to Spring in Action 4th edition 4th chapter - AOP" 
 date: 2020-01-31
-tag: Spring, Aspect Oriented Programming
+tag: "Spring in Action 4th edition"
 ---
 
 ## What is Cross-Cutting Concern
@@ -293,7 +293,7 @@ public class ConcertConfig {
 }
 ```
 
-这里的@Configuration和@ComponentScan都是老生畅常谈了, 表明自己是一个配置类, 表明要启用自动化的Component搜索, 第三个注解第一次见到  @EnableAspectJAutoProxy据说增加了这个才有用. 
+这里的@Configuration和@ComponentScan都是老生畅常谈了, 表明自己是一个配置类, 表明要启用自动化的Component搜索, 第三个注解第一次见到  @EnableAspectJAutoProxy据说增加了这个才有用.
 
 然后我看了一下 @EnableAspectJAutoProxy的文档, 解答了我心中的一个问题, 就是书上的代码, 针对Audience这个切面, 在配置类中使用 @Bean 注解 方法的方式来告诉Context需要初始化一个实例, 但是对于Music这个类来说, 却是使用的是在class级别注解一个 @Component 来告诉Context需要初始化一个实例, 前后看着不一致的感觉.
 
@@ -301,8 +301,8 @@ public class ConcertConfig {
 
 ```java
 /*
- * Enables support for handling components marked with AspectJ's @Aspect annotation, 
- * similar to functionality found in Spring's <aop:aspectj-autoproxy> XML element. 
+ * Enables support for handling components marked with AspectJ's @Aspect annotation,
+ * similar to functionality found in Spring's <aop:aspectj-autoproxy> XML element.
  * To be used on @Configuration classes as follows:
  */
    @Configuration
@@ -336,14 +336,14 @@ public class ConcertConfig {
    }
 
 // In the scenario above, @EnableAspectJAutoProxy ensures that MyAspect will be properly processed and that FooService will be proxied mixing in the advice that it contributes.
-// Users can control the type of proxy that gets created for FooService using the proxyTargetClass() attribute. The following enables CGLIB-style 'subclass' proxies as opposed to the default 
+// Users can control the type of proxy that gets created for FooService using the proxyTargetClass() attribute. The following enables CGLIB-style 'subclass' proxies as opposed to the default
 // interface-based JDK proxy approach.
 ```
 
 从这个代码可以看出全部都使用@Bean的注解,是可以的. 代码的注释里面也有对应的全都使用全自动扫描的方式的书写方式
 
 ```java
-// Note that @Aspect beans may be component-scanned like any other. Simply mark the aspect with both @Aspect and @Component:
+    // Note that @Aspect beans may be component-scanned like any other. Simply mark the aspect with both @Aspect and @Component:
    package com.foo;
   
    @Component
@@ -352,13 +352,100 @@ public class ConcertConfig {
    @Aspect
    @Component
    public class MyAspect { ... }
-// Then use the @ComponentScan annotation to pick both up:
+    // Then use the @ComponentScan annotation to pick both up:
    @Configuration
    @ComponentScan("com.foo")
    @EnableAspectJAutoProxy
    public class AppConfig {
-// no explicit @Bean definitions required
+    // no explicit @Bean definitions required
    }
 ```
 
 上面的代码也是没有问题的, 但是需要在注解@Aspect的类上面增加一个@Component的注解, 执行效果是一样的.
+
+### Creating Around Advice（创建环绕通知）
+
+环绕advice是一种非常强大的advice，允许我们编写完成的逻辑去包裹被advised的函数。我们对之前的例子进行简单的改写来演示环绕通知。
+
+```java
+public class Audience {
+
+    /**
+     * The value given to the @Pointcut annotation is a pointcut expression, just like the ones you
+     * used previously with the advice annotations. By annotating performance() with @Pointcut in this way,
+     * you essentially extend the pointcut expression language so that
+     * you can use performance() in your pointcut expressions anywhere you’d otherwise
+     * use the longer expression. As you can see, you replace the longer expression in all the
+     * advice annotations with performance().
+     *
+     * The body of the performance() method is irrelevant and, in fact, should be
+     * empty. The method itself is just a marker, giving the @Pointcut annotation something
+     * to attach itself to
+     */
+    @Pointcut(value = "execution(* io.github.libai8723.Performance.perform(..))")
+    public void performance() {}
+
+    // the same meaning with the longer expression
+    @Before("performance()")
+    public void silenceCellPhones() {
+        System.out.println("Silencing cell phones");
+    }
+
+    @Before("performance()")
+    public void takeSeats() {
+        System.out.println("Taking seats");
+    }
+
+    @AfterReturning("performance()")
+    public void applause() {
+        System.out.println("CLAP CLAP CLAP!!!");
+    }
+    @AfterThrowing("performance()")
+    public void demandRefund() {
+        System.out.println("Demanding a refund");
+    }
+
+    @Around("performance()")
+    public void watchPerformance(ProceedingJoinPoint jp) {
+        try {
+            System.out.println("IAround Advice: Silencing the cell phones");
+            System.out.println("In Around Advice: Taking seats");
+            System.out.println("before execute the advised method, method signature is: " + jp.getSignature().toLongString());
+            jp.proceed();
+            System.out.println("In Around Advice: CLAP CLAP CLAP!!!");
+        } catch (Throwable e) {
+            System.out.println("In Around Advice: Demanding a refund");
+        }
+    }
+}
+```
+
+上面的代码，的实际的输出是，这个输出是比较讲究的，可以仔细看一下
+
+```text
+IAround Advice: Silencing the cell phones
+In Around Advice: Taking seats
+before execute the advised method, method signature is: public abstract void io.github.libai8723.Performance.perform()
+Silencing cell phones
+Taking seats
+Piano Solo
+CLAP CLAP CLAP!!!
+In Around Advice: CLAP CLAP CLAP!!!
+```
+
+从代码来看增加一个环绕通知也是非常简单的，使用ProceedingJoinPoint这个参数可以在环绕通知里面调用被advised的函数。
+
+This object is necessary because it’s how you can invoke the advised method from within your advice. The advice method will do everything it needs to do; and when it’s ready to pass control to the advised method, it will call ProceedingJoinPoint’s proceed() method.
+
+**ProceedingJoinPoint jp** 这个参数是必要的，使用这个参数可以让我们在环绕通知里面调用被advised的函数，但我们需要把控制权交给被建议的method的时候我们去调用**proceed()**函数就可以了。
+
+Note that it’s crucial that you remember to include a call to the proceed() method. If you don’t, then your advice will effectively block access to the advised method. Maybe that’s what you want, but chances are good that you do want the advised method to be executed at some point.
+
+虽然这个说法很无聊，但是还是要提醒大家记得去调用 **ProceedingJoinPoint.proceed()** 的函数，因为如果不调用的话，就相当于我们阻止了这个函数的调用。
+
+What’s also interesting is that just as you can omit a call to the proceed() method to block access to the advised method, you can also invoke it multiple times from within the advice. One reason for doing this may be to implement retry logic to perform repeated attempts on the advised method should it fail.
+
+当然在环绕通知里面也不一定仅仅调用一次被advised的函数，当然可以调用多次了，例如在“失败重试”的场景下。
+
+### 处理advice中的参数
+
