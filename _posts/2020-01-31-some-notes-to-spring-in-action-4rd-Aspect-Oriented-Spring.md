@@ -449,3 +449,137 @@ What’s also interesting is that just as you can omit a call to the proceed() m
 
 ### 处理advice中的参数
 
+为了演示advice怎么利用和获取被advised方法的参数，我们重新温习一下之前第二章中提到的例子，播放唱片的例子。
+
+按照书上的说明，我们写了TrackCounter这个类
+
+```java
+@Aspect
+public class TrackCounter {
+
+    private Map<Integer, Integer> trackCounts = new HashMap<>();
+
+    @Pointcut("execution(* io.github.libai8723.handleparameter.CompactDisc.playTrack(int)) && args(trackNumber)")
+    public void trackPlayed(int trackNumber) {
+    }
+
+    @Before("trackPlayed(trackNumber)")
+    public void countTrack(int trackNumber) {
+        int currentCount = getPlayCount(trackNumber);
+        trackCounts.put(trackNumber, currentCount + 1);
+    }
+
+    public int getPlayCount(int trackNumber) {
+        //awesome statement
+        return trackCounts.containsKey(trackNumber) ? trackCounts.get(trackNumber) : 0;
+    }
+}
+```
+
+```java
+public interface CompactDisc {
+    /**
+     * play all the tracks in this disc
+     */
+    void play();
+
+    /**
+     * play a certain track with track number
+     * @param track the track number
+     */
+    void playTrack(int track);
+
+    /**
+     * get all the track numbers in this disc
+     * @return a ordered list of track numbers
+     */
+    List<Integer> getTracks();
+}
+```
+
+```java
+public class BlankDisc implements CompactDisc {
+
+    private String title;
+    private String artist;
+    private Map<Integer, String> tracks;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setTracks(Map<Integer, String> tracks) {
+        this.tracks = tracks;
+    }
+
+    @Override
+    public void play() {
+        Set<Integer> trackNumbers = this.tracks.keySet();
+        int[] nums = new int[trackNumbers.size()];
+
+        int idx = 0;
+        for (Integer integer : trackNumbers ) {
+            nums[idx] = integer;
+            idx++;
+        }
+
+        Arrays.sort(nums);
+
+        for ( int i : nums ) {
+            playTrack(i);
+        }
+
+    }
+
+    @Override
+    public void playTrack(int track) {
+        System.out.println("Track " + track + " : " + this.tracks.get(track) + "is playing");
+    }
+
+    @Override
+    public List<Integer> getTracks() {
+        Set<Integer> set = this.tracks.keySet();
+        List<Integer> list = new ArrayList<>();
+
+        list.addAll(set);
+        Collections.sort(list);
+        return list;
+    }
+}
+
+```
+
+从@PointCut的注解的参数来看，我们是要针对handleparameter这个包下面的CompactDisc这个类型下面的playTrack这个函数进行一个切面，并且这个参数限定符叫做 args(trackNumber)
+
+这里的@Before的注解也是平淡无奇的注解，和前面无参数的例子唯一区别的地方在于@PointCut的参数
+
+execution(* io.github.libai8723.handleparameter.CompactDisc.playTrack(int)) && args(trackNumber)
+
+execution就不需要说了就是一个PointCut Expression Language的执行方法的表达式， * 号表明这个这个函数返回的类型可以是任何类型，然后限定了一个函数的Quanlify Name，最关键的是最后一部分也就是 args(trackNumber)的限定符
+
+这个限定符的意思是，传递给playTrack函数的任何int类型的参数，也应该被传给advice方法，我们可以看到这里给到args的参数的名字与我们PointCut的方法的参数名称也是匹配的。
+
+所以在@Before注解中我们使用了简化的注解的取值。
+
+然后我们在配置类中加上相应的@Configuration的注解和@EnableAspectJAutoProxy注解即可。但是运行出来的结果也是非常有意思的
+
+```java
+Track 1 : rolling in the deep is playing
+Track 2 : there is a fire starting in my heart is playing
+Track 3 : someone like you is playing
+Track 1 : rolling in the deep is playing
+Track 2 : there is a fire starting in my heart is playing
+Track 3 : someone like you is playing
+Track 1 : rolling in the deep is playing
+Track 1 : rolling in the deep is playing
+Track 1 : rolling in the deep is playing
+Track Number : 1 has been played 3 times
+Track Number : 2 has been played 0 times
+Track Number : 3 has been played 0 times
+```
+
+从这个结果我们可以看到BlankDisk中的play方法虽然在类内部调用playTrack(int)的方法来播放唱片，但是这个在类内部的调用，并没有被切面切到。很有趣
