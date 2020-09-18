@@ -1,7 +1,7 @@
 ---
 title: "Some notes to Spring in Action 4th edition 4th chapter - AOP" 
 date: 2020-01-31
-tag: Spring, Aspect Oriented Programming
+tag: "Spring in Action 4th edition"
 ---
 
 ## What is Cross-Cutting Concern
@@ -116,7 +116,6 @@ An aspect is the merger of advice and pointcuts. Taken together, advice and poin
 
 一个Aspect就是Advice和PointCuts的结合。当把两者结合起来的时候，关于一个aspect的所有事情都定义清楚了
 
-
 #### INTRODUCTIONS（引入）
 
 An **introduction** allows you to add new methods or attributes to existing classes. For example, you could create an **Auditable** advice class that keeps the state of when an object was last modified. This could be as simple as having one method, setLast-Modified(Date), and an instance variable to hold this state. The new method and instance variable can then be introduced to existing classes without having to change them, giving them new behavior and state.
@@ -136,3 +135,451 @@ Weaving is the process of applying aspects to a target object to create a new pr
 1. 编译时，需要特定的编译器，例如AspectJ的编译器。
 2. 类加载时，这个需要特定的class loader
 3. 运行时。通常来说，AOP的容器会在weaving的时候，动态的创建一个代理对象，代理到目标对象上。这就是Spring AOP的实现方式
+
+### Spring's AOP Support
+
+Not all AOP frameworks are created equal. They may differ in how rich their join point models are. Some allow you to apply advice at the field-modification level, whereas others only expose the join points related to method invocations. They may also differ in how and when they weave the aspects. Whatever the case, the ability to create pointcuts that define the join points at which aspects should be woven is what makes it an AOP framework.
+
+并不是所有的AOP框架都是生而平等的。它们的主要的区别在于他们支持的join point的丰富程度。有些框架允许你在field-modification级别应用advice，而有些框架只能提供与方法调用相关的joint points。同时区别也在于这些aspects在什么时候，以怎样的方式被框架weave in。 排除无论林林总总这些区别，创建point cuts并且定义哪些joint points需要被woven in的能力，这个能力让我们讨论的东西成为了一个AOP框架。
+
+Spring’s support for AOP comes in four styles:
+
+* Classic Spring proxy-based AOP
+* Pure- POJO aspects
+* @AspectJ annotation-driven aspects
+* Injected AspectJ aspects (available in all versions of Spring)
+
+spring框架支持4种形式的AOP：
+
+1. 经典的Spring基于proxy的AOP
+2. 纯粹的POJO的切面
+3. 采用@AspectJ注解驱动的切面
+4. 直接注入AspectJ的切面
+
+其实前三种都是Spring关于AOP的不同的实现方式，Spring AOP是基于dynamic proxy实现的，也就意味着只能支持method调用级别的切面。
+
+第一种我们称之为经典的Spring AOP在它出现的时代，无疑是先进的，但是和后来声明式切面，和基于注解驱动的切面比较的时候，就会发现异常的繁琐和难以理解。所以我们不讨论classic Spring AOP
+
+With Spring’s aop **namespace**, you can turn pure POJO s into aspects. In truth, those POJO s will only supply methods that are called in reaction to a pointcut. Unfortunately, this technique requires XML configuration, but it’s an easy way to declaratively turn any object into an aspect.
+
+这里为什么要强调 **namespace**，是因为 namespace是xml中的概念，所以这里说的是基于xml的声名式的切面，确实在这种模式下，POJO之需要提供对应pointcut的相应函数就可以了，剩下的事情就交给XML配置文件了，但是很不幸，很多人不喜欢配置XML，但是实话实说这是一种很简单的把POJO变成切面的方式。
+
+![Spring AOP Runtime Proxy](/front-end-dev-notes-bignerdbook/assets/img/Spring-AOP-Runtime-Proxy.png)
+
+上面的图片很好的说明了Spring中面向切面是怎么实现的。
+
+In Spring, aspects are woven into Spring-managed beans at runtime by wrapping them with a proxy class. As illustrated in figure 4.3, the proxy class poses as the target bean, intercepting advised method calls and forwarding those calls to the target bean.
+Between the time when the proxy intercepts the method call and the time when it invokes the target bean’s method, the proxy performs the aspect logic. Spring doesn’t create a proxied object until that proxied bean is needed by the application. If you’re using an **ApplicationContext**, the proxied objects will be created when it loads all the beans from the **BeanFactory**. Because Spring creates proxies at runtime, you don’t need a special compiler to weave aspects in Spring’s AOP.
+
+在Spring中，切面是在运行时的时候被weave into被spring管理的beans中的，这里说weave into beans有点不太贴切，因为实际上是使用一个prxoy类来包裹这个beans。就和上图中描述的一样，这个代理类被暴露出来当作这个目标bean，这个代理类会拦截advised method的调用，并且把这些调用转发到真正的目标bean，在代理类拦截调用和代理类调用它包裹的目标bean的方法之间，这个代理类会执行切面的逻辑。Spring会把创建代理对象的时间延迟直到程序需要这个代理类。如果我们使用的是一个 **ApplicationContext** 那么代理对象会在 **Context** 从 **BeanFactory** 加载所有的Beans的时候创建这些代理类。
+
+@todo 所以我们还是要搞明白BeanFactory和ApplicationContext的关系是什么。
+
+### Selecting join points with pointcuts（使用pointcut来选择joint point）
+
+In Spring AOP , pointcuts are defined using AspectJ’s pointcut expression language.
+
+其实Spring AOP使用的是AspectJ的 pointcut expression language，但是受限于Spring AOP的要求，在Spring中仅仅使用AspectJ的pointcut expression language的一个子集。
+
+Table 4.1 lists the AspectJ pointcut designators that are supported in Spring AOP
+
+AspectJ designator（指示符） | Description
+-------- |  -------
+args()  |  Limits join-point matches to the execution of methods whose arguments are instances of the given types
+args()  |  把joint-point限制在被执行的方法的参数与给定的类型匹配的子集上
+@args()  |  Limits join-point matches to the execution of methods whose arguments are annotated with the given annotation types
+@args()  |  把joint-point限制在被执行的方法的参数是使用给定的注解来注解的子集上
+execution()  |  Matches join points that are method executions
+execution()  |  匹配所有的方法执行的join points
+this()  |  Limits join-point matches to those where the bean reference of the AOP proxy is of a given type
+this()  |  @todo 完全没有看懂this()
+target()  |  Limits join-point matches to those where the target object is of a given type
+target()  |  按照给定的类型来筛选joint-point
+@target() |  Limits matching to join points where the class of the executing object has an annotation of the given type
+@target() |  按照执行对象的class有给定的注解来筛选joint point
+within()  |  Limits matching to join points within certain types
+@within() |  Limits matching to join points within types that have the given annotation (the execution of methods declared in types with the given annotation when using Spring AOP)
+@annotation  | Limits join-point matches to those where the subject of the join point has the given annotation
+
+这些指示符不知道是干啥的。因为我没用过aspectJ
+
+继续看第一个AOP的例子吧，上面的这些指示符，早晚有一天都用过一次就知道怎么用了。
+
+我们第一个用到的例子是：
+
+```java
+execution(* concert.Performance.perform(..))
+```
+
+其中execution是上面表格中提到的指示符，说明我们要选择的是method的执行，来作为pointcut的指示符。
+
+括号里面的表达式也比较简单，第一个 * 表示的是意思是任何返回值，然后concert.Performance是包名称和类名称。
+
+然后后面跟随的是类中间的method的名称，(..)的意思是匹配任何参数的意思，这样的话就是所有的concert.Performance下面的所有名字叫做perform的函数了.
+
+然后在定义PointCut的时候我们使用了@Before的注解,还有@After的注解，但是对应的expression写的都是一模一样的表达式。这样就显得非常的罗嗦了，于是作者就介绍了一个方法，使用@PointCut注解来扩展PointCut Expression的能力：
+
+具体就是下面的代码了：
+
+```java
+@Aspect
+public class Audience {
+    /**
+     * The value given to the @Pointcut annotation is a pointcut expression, just like the ones you
+     * used previously with the advice annotations. By annotating performance() with @Pointcut in this way,
+     * you essentially extend the pointcut expression language so that
+     * you can use performance() in your pointcut expressions anywhere you’d otherwise
+     * use the longer expression. As you can see, you replace the longer expression in all the
+     * advice annotations with performance().
+     *
+     * The body of the performance() method is irrelevant and, in fact, should be
+     * empty. The method itself is just a marker, giving the @Pointcut annotation something
+     * to attach itself to
+     */
+    @Pointcut(value = "execution(* io.github.libai8723.Performance.perform(..))")
+    public void performance() {}
+
+    // the same meaning with the longer expression
+    @Before("performance()")
+    public void silenceCellPhones() {
+        System.out.println("Silencing cell phones");
+    }
+
+    @Before("performance()")
+    public void takeSeats() {
+        System.out.println("Taking seats");
+    }
+
+    @AfterReturning("performance()")
+    public void applause() {
+        System.out.println("CLAP CLAP CLAP!!!");
+    }
+    @AfterThrowing("performance()")
+    public void demandRefund() {
+        System.out.println("Demanding a refund");
+    }
+}
+
+```
+
+首先这的 @Aspect表明当前的类是一个且面Aspect，关于@PointCut的注解可以详细的看看上面代码中的注释，就是原书文字的拷贝，这里讲解的还是非常好的。既然写的非常好，那我还是翻译一下吧：
+
+In Audience, the performance() method is annotated with @Pointcut. The value given to the @Pointcut annotation is a pointcut expression, just like the ones you used previously with the advice annotations. By annotating performance() with @Pointcut in this way, you essentially extend the pointcut expression language so that you can use performance() in your pointcut expressions anywhere you’d otherwise use the longer expression. As you can see, you replace the longer expression in all the advice annotations with performance().
+
+在上面的代码中, 我们注解的performance函数使用的是@PointCut注解,给到这个注解的值和之前的代码是相同的.当我们使用这种方式进行注解的时候,我们实际上扩展了point cut expression language, 以至于我们可以使用 performance()在我们其他的需要使用pointcut expression的地方来代替在@PointCut中的至,这样可以让我们少写非常多的同样的注解的代码.
+
+The body of the performance() method is irrelevant and, in fact, should be empty. The method itself is just a marker, giving the @Pointcut annotation something to attach itself to. Note that aside from the annotations and the no-op performance() method, the Audience class is essentially a POJO . Its methods can be called just like methods on any other Java class. Its methods can be individually unit-tested just as in any other Java class. Audience is just another Java class that happens to be annotated to be used as an aspect.
+
+我们可以看到performance函数的body是空的,实际上也应该如此,因为这个body实际上没有任何用途,method本身就是一个标记而已,用来给到@Pointcut这个注解一个可以注解的东西. 我们可以注意到除了这个毫无用途的函数之外,整个Audience类就是一个POJO,它的方法可以像其他java类一样被调用, 这样被单元测试起来也是很方便的. 或者我们应该反过来说,Audience类仅仅是一个POJO, 只是恰好被使用了一个且面的注解进行了注解.
+
+剩下的时间就简单了, 因为现在看的还是SIA 4th的内容, 大部分内容还是需要自己手工去配置的, 不像现在的Spring Boot, 所以采用Java Congifuration的方式, 增加一个配置类:
+
+```java
+@Configuration
+@ComponentScan
+@EnableAspectJAutoProxy
+public class ConcertConfig {
+
+    public static void main(String[] args) {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext("io.github.libai8723");
+        Performance p = (Performance) ctx.getBean("music");
+        p.perform();
+    }
+
+    @Bean
+    public Audience audience() {
+        return new Audience();
+    }
+}
+```
+
+这里的@Configuration和@ComponentScan都是老生畅常谈了, 表明自己是一个配置类, 表明要启用自动化的Component搜索, 第三个注解第一次见到  @EnableAspectJAutoProxy据说增加了这个才有用.
+
+然后我看了一下 @EnableAspectJAutoProxy的文档, 解答了我心中的一个问题, 就是书上的代码, 针对Audience这个切面, 在配置类中使用 @Bean 注解 方法的方式来告诉Context需要初始化一个实例, 但是对于Music这个类来说, 却是使用的是在class级别注解一个 @Component 来告诉Context需要初始化一个实例, 前后看着不一致的感觉.
+
+于是在@EnableAspectJAutoProxy的文档中,看到下面的描述:
+
+```java
+/*
+ * Enables support for handling components marked with AspectJ's @Aspect annotation,
+ * similar to functionality found in Spring's <aop:aspectj-autoproxy> XML element.
+ * To be used on @Configuration classes as follows:
+ */
+   @Configuration
+   @EnableAspectJAutoProxy
+   public class AppConfig {
+  
+       @Bean
+       public FooService fooService() {
+           return new FooService();
+       }
+  
+       @Bean
+       public MyAspect myAspect() {
+           return new MyAspect();
+       }
+   }
+
+// Where FooService is a typical POJO component and MyAspect is an @Aspect-style aspect:
+
+   public class FooService {
+  
+       // various methods
+   }
+   @Aspect
+   public class MyAspect {
+  
+       @Before("execution(* FooService+.*(..))")
+       public void advice() {
+           // advise FooService methods as appropriate
+       }
+   }
+
+// In the scenario above, @EnableAspectJAutoProxy ensures that MyAspect will be properly processed and that FooService will be proxied mixing in the advice that it contributes.
+// Users can control the type of proxy that gets created for FooService using the proxyTargetClass() attribute. The following enables CGLIB-style 'subclass' proxies as opposed to the default
+// interface-based JDK proxy approach.
+```
+
+从这个代码可以看出全部都使用@Bean的注解,是可以的. 代码的注释里面也有对应的全都使用全自动扫描的方式的书写方式
+
+```java
+    // Note that @Aspect beans may be component-scanned like any other. Simply mark the aspect with both @Aspect and @Component:
+   package com.foo;
+  
+   @Component
+   public class FooService { ... }
+  
+   @Aspect
+   @Component
+   public class MyAspect { ... }
+    // Then use the @ComponentScan annotation to pick both up:
+   @Configuration
+   @ComponentScan("com.foo")
+   @EnableAspectJAutoProxy
+   public class AppConfig {
+    // no explicit @Bean definitions required
+   }
+```
+
+上面的代码也是没有问题的, 但是需要在注解@Aspect的类上面增加一个@Component的注解, 执行效果是一样的.
+
+### Creating Around Advice（创建环绕通知）
+
+环绕advice是一种非常强大的advice，允许我们编写完成的逻辑去包裹被advised的函数。我们对之前的例子进行简单的改写来演示环绕通知。
+
+```java
+public class Audience {
+
+    /**
+     * The value given to the @Pointcut annotation is a pointcut expression, just like the ones you
+     * used previously with the advice annotations. By annotating performance() with @Pointcut in this way,
+     * you essentially extend the pointcut expression language so that
+     * you can use performance() in your pointcut expressions anywhere you’d otherwise
+     * use the longer expression. As you can see, you replace the longer expression in all the
+     * advice annotations with performance().
+     *
+     * The body of the performance() method is irrelevant and, in fact, should be
+     * empty. The method itself is just a marker, giving the @Pointcut annotation something
+     * to attach itself to
+     */
+    @Pointcut(value = "execution(* io.github.libai8723.Performance.perform(..))")
+    public void performance() {}
+
+    // the same meaning with the longer expression
+    @Before("performance()")
+    public void silenceCellPhones() {
+        System.out.println("Silencing cell phones");
+    }
+
+    @Before("performance()")
+    public void takeSeats() {
+        System.out.println("Taking seats");
+    }
+
+    @AfterReturning("performance()")
+    public void applause() {
+        System.out.println("CLAP CLAP CLAP!!!");
+    }
+    @AfterThrowing("performance()")
+    public void demandRefund() {
+        System.out.println("Demanding a refund");
+    }
+
+    @Around("performance()")
+    public void watchPerformance(ProceedingJoinPoint jp) {
+        try {
+            System.out.println("IAround Advice: Silencing the cell phones");
+            System.out.println("In Around Advice: Taking seats");
+            System.out.println("before execute the advised method, method signature is: " + jp.getSignature().toLongString());
+            jp.proceed();
+            System.out.println("In Around Advice: CLAP CLAP CLAP!!!");
+        } catch (Throwable e) {
+            System.out.println("In Around Advice: Demanding a refund");
+        }
+    }
+}
+```
+
+上面的代码，的实际的输出是，这个输出是比较讲究的，可以仔细看一下
+
+```text
+IAround Advice: Silencing the cell phones
+In Around Advice: Taking seats
+before execute the advised method, method signature is: public abstract void io.github.libai8723.Performance.perform()
+Silencing cell phones
+Taking seats
+Piano Solo
+CLAP CLAP CLAP!!!
+In Around Advice: CLAP CLAP CLAP!!!
+```
+
+从代码来看增加一个环绕通知也是非常简单的，使用ProceedingJoinPoint这个参数可以在环绕通知里面调用被advised的函数。
+
+This object is necessary because it’s how you can invoke the advised method from within your advice. The advice method will do everything it needs to do; and when it’s ready to pass control to the advised method, it will call ProceedingJoinPoint’s proceed() method.
+
+**ProceedingJoinPoint jp** 这个参数是必要的，使用这个参数可以让我们在环绕通知里面调用被advised的函数，但我们需要把控制权交给被建议的method的时候我们去调用**proceed()**函数就可以了。
+
+Note that it’s crucial that you remember to include a call to the proceed() method. If you don’t, then your advice will effectively block access to the advised method. Maybe that’s what you want, but chances are good that you do want the advised method to be executed at some point.
+
+虽然这个说法很无聊，但是还是要提醒大家记得去调用 **ProceedingJoinPoint.proceed()** 的函数，因为如果不调用的话，就相当于我们阻止了这个函数的调用。
+
+What’s also interesting is that just as you can omit a call to the proceed() method to block access to the advised method, you can also invoke it multiple times from within the advice. One reason for doing this may be to implement retry logic to perform repeated attempts on the advised method should it fail.
+
+当然在环绕通知里面也不一定仅仅调用一次被advised的函数，当然可以调用多次了，例如在“失败重试”的场景下。
+
+### 处理advice中的参数
+
+为了演示advice怎么利用和获取被advised方法的参数，我们重新温习一下之前第二章中提到的例子，播放唱片的例子。
+
+按照书上的说明，我们写了TrackCounter这个类
+
+```java
+@Aspect
+public class TrackCounter {
+
+    private Map<Integer, Integer> trackCounts = new HashMap<>();
+
+    @Pointcut("execution(* io.github.libai8723.handleparameter.CompactDisc.playTrack(int)) && args(trackNumber)")
+    public void trackPlayed(int trackNumber) {
+    }
+
+    @Before("trackPlayed(trackNumber)")
+    public void countTrack(int trackNumber) {
+        int currentCount = getPlayCount(trackNumber);
+        trackCounts.put(trackNumber, currentCount + 1);
+    }
+
+    public int getPlayCount(int trackNumber) {
+        //awesome statement
+        return trackCounts.containsKey(trackNumber) ? trackCounts.get(trackNumber) : 0;
+    }
+}
+```
+
+```java
+public interface CompactDisc {
+    /**
+     * play all the tracks in this disc
+     */
+    void play();
+
+    /**
+     * play a certain track with track number
+     * @param track the track number
+     */
+    void playTrack(int track);
+
+    /**
+     * get all the track numbers in this disc
+     * @return a ordered list of track numbers
+     */
+    List<Integer> getTracks();
+}
+```
+
+```java
+public class BlankDisc implements CompactDisc {
+
+    private String title;
+    private String artist;
+    private Map<Integer, String> tracks;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setTracks(Map<Integer, String> tracks) {
+        this.tracks = tracks;
+    }
+
+    @Override
+    public void play() {
+        Set<Integer> trackNumbers = this.tracks.keySet();
+        int[] nums = new int[trackNumbers.size()];
+
+        int idx = 0;
+        for (Integer integer : trackNumbers ) {
+            nums[idx] = integer;
+            idx++;
+        }
+
+        Arrays.sort(nums);
+
+        for ( int i : nums ) {
+            playTrack(i);
+        }
+
+    }
+
+    @Override
+    public void playTrack(int track) {
+        System.out.println("Track " + track + " : " + this.tracks.get(track) + "is playing");
+    }
+
+    @Override
+    public List<Integer> getTracks() {
+        Set<Integer> set = this.tracks.keySet();
+        List<Integer> list = new ArrayList<>();
+
+        list.addAll(set);
+        Collections.sort(list);
+        return list;
+    }
+}
+
+```
+
+从@PointCut的注解的参数来看，我们是要针对handleparameter这个包下面的CompactDisc这个类型下面的playTrack这个函数进行一个切面，并且这个参数限定符叫做 args(trackNumber)
+
+这里的@Before的注解也是平淡无奇的注解，和前面无参数的例子唯一区别的地方在于@PointCut的参数
+
+execution(* io.github.libai8723.handleparameter.CompactDisc.playTrack(int)) && args(trackNumber)
+
+execution就不需要说了就是一个PointCut Expression Language的执行方法的表达式， * 号表明这个这个函数返回的类型可以是任何类型，然后限定了一个函数的Quanlify Name，最关键的是最后一部分也就是 args(trackNumber)的限定符
+
+这个限定符的意思是，传递给playTrack函数的任何int类型的参数，也应该被传给advice方法，我们可以看到这里给到args的参数的名字与我们PointCut的方法的参数名称也是匹配的。
+
+所以在@Before注解中我们使用了简化的注解的取值。
+
+然后我们在配置类中加上相应的@Configuration的注解和@EnableAspectJAutoProxy注解即可。但是运行出来的结果也是非常有意思的
+
+```java
+Track 1 : rolling in the deep is playing
+Track 2 : there is a fire starting in my heart is playing
+Track 3 : someone like you is playing
+Track 1 : rolling in the deep is playing
+Track 2 : there is a fire starting in my heart is playing
+Track 3 : someone like you is playing
+Track 1 : rolling in the deep is playing
+Track 1 : rolling in the deep is playing
+Track 1 : rolling in the deep is playing
+Track Number : 1 has been played 3 times
+Track Number : 2 has been played 0 times
+Track Number : 3 has been played 0 times
+```
+
+从这个结果我们可以看到BlankDisk中的play方法虽然在类内部调用playTrack(int)的方法来播放唱片，但是这个在类内部的调用，并没有被切面切到。很有趣

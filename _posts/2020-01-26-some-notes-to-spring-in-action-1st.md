@@ -1,7 +1,7 @@
 ---
 title: "Some notes to Spring in Action 4th edition 1st" 
 date: 2020-01-26
-tag: Spring, IoC
+tag: "Spring in Action 4th edition"
 ---
 
 ## 1. 关于依赖注入(Dependency Injection)
