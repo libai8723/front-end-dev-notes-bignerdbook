@@ -459,7 +459,7 @@ public class TrackCounter {
 
     private Map<Integer, Integer> trackCounts = new HashMap<>();
 
-    @Pointcut("execution(* io.github.libai8723.handleparameter.CompactDisc.playTrack(int)) && args(trackNumber)")
+    @Pointcut("execution(* io.github.libai8723.handleparameter.BlankDisc.playTrack(int)) && args(trackNumber)")
     public void trackPlayed(int trackNumber) {
     }
 
@@ -471,10 +471,16 @@ public class TrackCounter {
 
     public int getPlayCount(int trackNumber) {
         //awesome statement
-        return trackCounts.containsKey(trackNumber) ? trackCounts.get(trackNumber) : 0;
+        return trackCounts.getOrDefault(trackNumber, 0);
     }
 }
 ```
+
+TrackCounter类，这个类是一个Aspect，其实按照Spring in Action的说法来看，这个类依然是一个POJO类，因为除了注解之外，没有别的东西了。这个类可以看到有一个自己的属性，trackCounts，是一个Integer->Integer的Map，主要是用来存储每个音乐Track的播放的次数。
+
+然后有一个getPlayCount的函数，用来看对应的track被播放了多少次。这里看到有一个很有趣的Map的语句，就是 getOrDefault的语句，可以帮助我们少写一行代码，真的是不错的。
+
+另外定义了一个毫无用途的trackPlayed函数，这个函数没有什么用途，就是作为一个attachPoint，让我们吧PointCut的表达式附着在这里。
 
 ```java
 public interface CompactDisc {
@@ -497,20 +503,12 @@ public interface CompactDisc {
 }
 ```
 
+CompactDisc是一个CD的接口类。
+
 ```java
 public class BlankDisc implements CompactDisc {
 
-    private String title;
-    private String artist;
     private Map<Integer, String> tracks;
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
 
     public void setTracks(Map<Integer, String> tracks) {
         this.tracks = tracks;
@@ -526,9 +524,7 @@ public class BlankDisc implements CompactDisc {
             nums[idx] = integer;
             idx++;
         }
-
         Arrays.sort(nums);
-
         for ( int i : nums ) {
             playTrack(i);
         }
@@ -537,21 +533,63 @@ public class BlankDisc implements CompactDisc {
 
     @Override
     public void playTrack(int track) {
-        System.out.println("Track " + track + " : " + this.tracks.get(track) + "is playing");
+        System.out.println("Track " + track + " : " + this.tracks.get(track) + " is playing");
     }
 
     @Override
     public List<Integer> getTracks() {
         Set<Integer> set = this.tracks.keySet();
-        List<Integer> list = new ArrayList<>();
-
-        list.addAll(set);
+        List<Integer> list = new ArrayList<>(set);
         Collections.sort(list);
         return list;
     }
 }
-
 ```
+
+BlankDisc是一个CompactDisc的实现类，在play（）函数里面是调用playTrack这个函数来播放一首歌曲的。我以为是可以PointCut到这个类内部的函数之间的相互调用呢。但是目前看来这样写，并不能Cut到类内部的函数的调用
+
+```java
+@Configuration
+@EnableAspectJAutoProxy
+public class TrackCounterConfig {
+
+    @Bean
+    public CompactDisc blankDisc(){
+        BlankDisc cd = new BlankDisc();
+
+        HashMap<Integer, String> tracks = new HashMap<>();
+        tracks.put(1, "rolling in the deep");
+        tracks.put(2, "there is a fire starting in my heart");
+        tracks.put(3, "someone like you");
+        cd.setTracks(tracks);
+
+        return cd;
+    }
+
+    @Bean
+    public TrackCounter trackCounter(){
+        return new TrackCounter();
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext("io.github.libai8723.handleparameter");
+        CompactDisc cd = ctx.getBean(CompactDisc.class);
+
+        cd.play();
+        cd.play();
+        cd.playTrack(1);
+        cd.playTrack(1);
+        cd.playTrack(1);
+
+        TrackCounter tc = ctx.getBean(TrackCounter.class);
+        for (int i = 1; i <= 3; i++) {
+            System.out.println("Track Number : " + i + " has been played " + tc.getPlayCount(i) + " times");
+        }
+    }
+}
+```
+
+最后是这个TrackCounterConfig这个类了，这个类作为Spring Application的配置类出现，然后 enable 了 AspectJAutoProxy，就是启动了代理的方式来实现AOP了。
 
 从@PointCut的注解的参数来看，我们是要针对handleparameter这个包下面的CompactDisc这个类型下面的playTrack这个函数进行一个切面，并且这个参数限定符叫做 args(trackNumber)
 
@@ -582,4 +620,9 @@ Track Number : 2 has been played 0 times
 Track Number : 3 has been played 0 times
 ```
 
-从这个结果我们可以看到BlankDisk中的play方法虽然在类内部调用playTrack(int)的方法来播放唱片，但是这个在类内部的调用，并没有被切面切到。很有趣
+从这个结果我们可以看到BlankDisk中的play方法虽然在类内部调用playTrack(int)的方法来播放唱片，但是这个在类内部的调用，并没有被切面切到。很有趣。
+
+按照书上的说法：
+The aspects you’ve worked with thus far wrap existing methods on the advised object. But method wrapping is just one of the tricks that aspects can perform. Let’s see how to write aspects that introduce completely new functionality into an advised object.
+
+到目前为止我们都是针对被advised对象上已经存在的方法进行wrap（包装）的方式来解释面向切面的工作的。但是包装一个方法仅仅是aspects可以实现的众多tricks之一。下面让我们来看一下如何写一个aspect来全新的引入新的功能到一个被advised的对象上。
