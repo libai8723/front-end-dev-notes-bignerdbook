@@ -476,12 +476,12 @@ public class TrackCounter {
 }
 ```
 
+
 TrackCounter类，这个类是一个Aspect，其实按照Spring in Action的说法来看，这个类依然是一个POJO类，因为除了注解之外，没有别的东西了。这个类可以看到有一个自己的属性，trackCounts，是一个Integer->Integer的Map，主要是用来存储每个音乐Track的播放的次数。
 
 然后有一个getPlayCount的函数，用来看对应的track被播放了多少次。这里看到有一个很有趣的Map的语句，就是 getOrDefault的语句，可以帮助我们少写一行代码，真的是不错的。
 
 另外定义了一个毫无用途的trackPlayed函数，这个函数没有什么用途，就是作为一个attachPoint，让我们吧PointCut的表达式附着在这里。
-
 ```java
 public interface CompactDisc {
     /**
@@ -503,13 +503,12 @@ public interface CompactDisc {
 }
 ```
 
-CompactDisc是一个CD的接口类。
 
+CompactDisc是一个CD的接口类。
 ```java
 public class BlankDisc implements CompactDisc {
 
     private Map<Integer, String> tracks;
-
     public void setTracks(Map<Integer, String> tracks) {
         this.tracks = tracks;
     }
@@ -620,9 +619,11 @@ Track Number : 2 has been played 0 times
 Track Number : 3 has been played 0 times
 ```
 
+
 从这个结果我们可以看到BlankDisk中的play方法虽然在类内部调用playTrack(int)的方法来播放唱片，但是这个在类内部的调用，并没有被切面切到。很有趣。
 
 按照书上的说法：
 The aspects you’ve worked with thus far wrap existing methods on the advised object. But method wrapping is just one of the tricks that aspects can perform. Let’s see how to write aspects that introduce completely new functionality into an advised object.
 
 到目前为止我们都是针对被advised对象上已经存在的方法进行wrap（包装）的方式来解释面向切面的工作的。但是包装一个方法仅仅是aspects可以实现的众多tricks之一。下面让我们来看一下如何写一个aspect来全新的引入新的功能到一个被advised的对象上。
+
