@@ -110,7 +110,6 @@ public class Audience {
 
 让我们假设，我们需要把一个叫作 [Encoreable](#encoreable)定义的接口引入到任何一个[Performance](#performance-interface)的实现上
 
-
 ### Encoreable
 
 Encoreable的英文的意思就是再来一次的意思。
