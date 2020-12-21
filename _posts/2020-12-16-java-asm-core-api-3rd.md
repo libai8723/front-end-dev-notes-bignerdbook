@@ -35,4 +35,48 @@ public abstract class ClassVisitor {
 }
 ```
 
-@todo, 下午接着读
+这里提到了abstract class，那就好好一下这个东西，既然使用了抽象类，那也就是说，可能有很多基本的功能在ClassVisitor中已经实现了，但是有很多抽象的方法就没有实现了，想要使用的话，就需要自己来实现这个抽象类了。
+
+<table>
+    <tr>
+        <td colspan="2">Modifiers, name, super class, interfaces</td>
+    </tr>
+    <tr>
+        <td colspan="2">Constant pool: numeric, string and type contants</td>
+    </tr>
+    <tr>
+        <td colspan="2">Source file name(optional)</td>
+    </tr>
+    <tr>
+        <td colspan="2">Annotation *</td>
+    </tr>
+    <tr>
+        <td>Inner class*</td><td>Name</td>
+    </tr>
+    <tr>
+        <td rowspan="3">Field*</td> <td>Modifiers, name, type</td></tr>
+        <tr><td>Annotation*</td></tr>
+        <tr><td>Attribute*</td></tr>
+    <tr><td rowspan="4">Method*</td><td>Modifiers, name, return and parameter type</td></tr>
+    <tr><td>Annotation*</td></tr>
+    <tr><td>Attribute*</td></tr>
+    <tr><td>Compiled Code</td></tr>
+</table>
+
+上面的ClassVisitor类中的对应的方法就是用来访问类中对应的部分（section）的，比如：
+
+1. visit这个方法就是用来访问class层级的,所以对应的是上面表格中的类的信息,我们可以看到一下visit的参数: 这里的ersion
+
+    ```java
+        public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) 
+    ```
+
+    * version - 类文件的版本. minor version 存储在16 most significant位中,major version存储在16 least significant位中.
+    * access - 表示类的访问标志例如public, private等等,[see Opcodes](https://asm.ow2.io/javadoc/constant-values.html#org.objectweb.asm.Opcodes.ACC_PRIVATE). 也会表明这个类是否是deprecated或者是一个record?啥叫一个record.
+    * name - 类的internal name
+    * signature - 类的签名. 如果一个类不是一个范型的类,或者没有extend一个范型的类,或者实现一个范型的接口的话,那这个取值就是null
+    * superName - 父类的inernal name
+    * interfaces - 类inherited interface
+
+2. @todo,对于注解这种元素,对应的visitAnnotation方法是什么意思呢?
+
