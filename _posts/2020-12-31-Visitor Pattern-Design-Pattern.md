@@ -1,6 +1,6 @@
 ---
 title: "The Visitor Pattern" 
-date: 2020-12-17
+date: 2020-12-31
 
 tag: "Design Pattern"
 ---
