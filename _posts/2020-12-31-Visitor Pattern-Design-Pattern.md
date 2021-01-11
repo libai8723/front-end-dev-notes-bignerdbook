@@ -131,7 +131,7 @@ public class Computer implements ComputerPart {
 
 到这里我们还是要罗嗦一下的，看到键盘的accept方法其实很简单的，就是在accept方法中，直接调用对应的visitor的visit方法，然后把自己作为一个元素的reference（this）传递进去就形了，因为键盘在Element构成的结构树（element hierarchy)中已经是末端的元素了，所以它的accept方法非常简单。
 
-然而当我们看到电脑（Computer.java）的accept方法的时候，我们发现就复杂很多了，因为Computer不是元素结构树上的一个末端的元素，它自己本身还包含了下层的元素，所以这种情况下，就需要在这类中间节点的accept方法中，指明应该怎么访问其下属元素节点和它本身。所以看到Computer类中的accept方法，就像一个二叉树的后序遍历一样。但是整体来看代码还是非常简单的。
+**然而当我们看到电脑（Computer.java）的accept方法的时候，我们发现就复杂很多了，因为Computer不是元素结构树上的一个末端的元素，它自己本身还包含了下层的元素，所以这种情况下，就需要在这类中间节点的accept方法中，指明应该怎么访问其下属元素节点和它本身。所以看到Computer类中的accept方法，就像一个二叉树的后序遍历一样。但是整体来看代码还是非常简单的。**
 
 好了，既然已经定义好了，元素要能接纳访问者Visitor对象，然后Visitor对象要访问元素，所以下面就开始定义Visitor类型的接口了，其实就是针对不同的元素定义visit方法，然后针对这个接口，写出不同的实现。
 

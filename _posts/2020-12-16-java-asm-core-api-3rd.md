@@ -37,31 +37,7 @@ public abstract class ClassVisitor {
 
 这里提到了abstract class，那就好好一下这个东西，既然使用了抽象类，那也就是说，可能有很多基本的功能在ClassVisitor中已经实现了，但是有很多抽象的方法就没有实现了，想要使用的话，就需要自己来实现这个抽象类了。
 
-<table>
-    <tr>
-        <td colspan="2">Modifiers, name, super class, interfaces</td>
-    </tr>
-    <tr>
-        <td colspan="2">Constant pool: numeric, string and type contants</td>
-    </tr>
-    <tr>
-        <td colspan="2">Source file name(optional)</td>
-    </tr>
-    <tr>
-        <td colspan="2">Annotation *</td>
-    </tr>
-    <tr>
-        <td>Inner class*</td><td>Name</td>
-    </tr>
-    <tr>
-        <td rowspan="3">Field*</td> <td>Modifiers, name, type</td></tr>
-        <tr><td>Annotation*</td></tr>
-        <tr><td>Attribute*</td></tr>
-    <tr><td rowspan="4">Method*</td><td>Modifiers, name, return and parameter type</td></tr>
-    <tr><td>Annotation*</td></tr>
-    <tr><td>Attribute*</td></tr>
-    <tr><td>Compiled Code</td></tr>
-</table>
+![StructureOfClassFiles](/front-end-dev-notes-bignerdbook/assets/img/StructureOfClassFile.png)
 
 上面的ClassVisitor类中的对应的方法就是用来访问类中对应的部分（section）的，比如：
 
