@@ -39,12 +39,43 @@ public abstract class ClassVisitor {
 
 ![StructureOfClassFiles](/front-end-dev-notes-bignerdbook/assets/img/StructureOfClassFile.png)
 
+上面的图看起来不是很清晰，但是JVM Spec中的表达是清晰的，具体如下：
+
+```java
+ClassFile {
+    u4             magic;
+    u2             minor_version;
+    u2             major_version;
+    u2             constant_pool_count;
+    cp_info        constant_pool[constant_pool_count-1];
+    u2             access_flags;
+    u2             this_class;
+    u2             super_class;
+    u2             interfaces_count;
+    u2             interfaces[interfaces_count];
+    u2             fields_count;
+    field_info     fields[fields_count];
+    u2             methods_count;
+    method_info    methods[methods_count];
+    u2             attributes_count;
+    attribute_info attributes[attributes_count];
+}
+```
+
+按照asm guide中的说明，必须按照下面的顺序来调用
+
+```text
+visit visitSource? visitOuterClass? ( visitAnnotation | visitAttribute )* ( visitInnerClass | visitField | visitMethod )* visitEnd
+```
+
+感觉上面上的class file structure大致能对应上，但是又不能完全对应上，有点奇怪的。
+
 上面的ClassVisitor类中的对应的方法就是用来访问类中对应的部分（section）的，比如：
 
 1. visit这个方法就是用来访问class层级的,所以对应的是上面表格中的类的信息,我们可以看到一下visit的参数: 这里的ersion
 
     ```java
-        public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) 
+        public void visit(int version, int access, String name, String signature, String superName, String[] interfaces)
     ```
 
     * version - 类文件的版本. minor version 存储在16 most significant位中,major version存储在16 least significant位中.
