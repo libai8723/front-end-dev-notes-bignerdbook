@@ -28,7 +28,7 @@ Modifier | Class | Package | Subclass | World
 public | Y | Y | Y | Y
 protected | Y | Y | Y | N
 no modifier | Y | Y | N | N
-private | Y | Y | Y | Y
+private | Y | N | N | N
 
 ### line 194~197
 
@@ -63,3 +63,111 @@ private | Y | Y | Y | Y
                 }
         }
 ```
+
+### line 263~272
+
+```java
+        maxStringLength = currentMaxStringLength;
+        // The Classfile's access_flags field is just after the last constant pool entry.
+        header = currentCpInfoOffset;
+
+        // Allocate the cache of ConstantDynamic values, if there is at least one.
+        constantDynamicValues = hasConstantDynamic ? new ConstantDynamic[constantPoolCount] : null;
+
+        // Read the BootstrapMethods attribute, if any (only get the offset of each method).
+        bootstrapMethodOffsets =
+                hasBootstrapMethods ? readBootstrapMethodsAttribute(currentMaxStringLength) : null;
+```
+
+首先把常量池中utf-8 string的最大长度，存在实例变量的maxStringLength中，然后把已经处理到的文件的字节的offset放在实例变量的header中。
+然后处理了2个我不太明白的东西，动态的常量和BootStrap的方法。 @todo
+
+这样的话，构造函数就结束了。感觉非常简单，仅仅是把常量池的常量的index解析出来，放在一个实例变量的cpInfoOffsets数组中了。
+
+## accept方法
+
+### 函数签名 line 418~421
+
+```java
+public void accept(
+            final ClassVisitor classVisitor,
+            final Attribute[] attributePrototypes,
+            final int parsingOptions) 
+```
+
+传入了一个classVisitor实例，用针对不同的class file的element进行对应的操作。
+
+### line 422~438
+
+```java
+        Context context = new Context();
+        context.attributePrototypes = attributePrototypes;
+        context.parsingOptions = parsingOptions;
+        context.charBuffer = new char[maxStringLength];
+
+        // Read the access_flags, this_class, super_class, interface_count and interfaces fields.
+        char[] charBuffer = context.charBuffer;
+        int currentOffset = header;
+        int accessFlags = readUnsignedShort(currentOffset);
+        String thisClass = readClass(currentOffset + 2, charBuffer);
+        String superClass = readClass(currentOffset + 4, charBuffer);
+        String[] interfaces = new String[readUnsignedShort(currentOffset + 6)];
+        currentOffset += 8;
+        for (int i = 0; i < interfaces.length; ++i) {
+            interfaces[i] = readClass(currentOffset, charBuffer);
+            currentOffset += 2;
+        }
+```
+
+context是一个上下文，在这个accept函数中使用，这个上下文还是挺有用的，出现在很多地方，还是很多函数调用的入参
+这里首先是申请了一小块buffer使用，用来存字符串，然后获取了访问标识，然后读取了thisClass和superClass。然后读取了接口列表。
+这里稍微看一下thisClass的读取的函数吧，看完之后发现很简单的，也就是跟踪了一下thisClass的常量池常量，然后一直追踪到对应的utf-8 String
+下面读取接口的也是一样的。
+
+### line 440~542
+
+这一段一开始看的时候，我也很疑惑，都是啥玩意阿。后来一看，有道理，先把class层面的东西都搞定，在深入其他的元素来读取，这样比较思考起来比较整齐。
+
+看来作者也是思考起来很整齐的，下面的代码读取的东西就是下面的东西了，先看 440 ~ 473 行的代码吧
+
+```java
+        // Read the class attributes (the variables are ordered as in Section 4.7 of the JVMS).
+        // Attribute offsets exclude the attribute_name_index and attribute_length fields.
+        // - The offset of the InnerClasses attribute, or 0.
+        int innerClassesOffset = 0;
+        // - The offset of the EnclosingMethod attribute, or 0.
+        int enclosingMethodOffset = 0;
+        // - The string corresponding to the Signature attribute, or null.
+        String signature = null;
+        // - The string corresponding to the SourceFile attribute, or null.
+        String sourceFile = null;
+        // - The string corresponding to the SourceDebugExtension attribute, or null.
+        String sourceDebugExtension = null;
+        // - The offset of the RuntimeVisibleAnnotations attribute, or 0.
+        int runtimeVisibleAnnotationsOffset = 0;
+        // - The offset of the RuntimeInvisibleAnnotations attribute, or 0.
+        int runtimeInvisibleAnnotationsOffset = 0;
+        // - The offset of the RuntimeVisibleTypeAnnotations attribute, or 0.
+        int runtimeVisibleTypeAnnotationsOffset = 0;
+        // - The offset of the RuntimeInvisibleTypeAnnotations attribute, or 0.
+        int runtimeInvisibleTypeAnnotationsOffset = 0;
+        // - The offset of the Module attribute, or 0.
+        int moduleOffset = 0;
+        // - The offset of the ModulePackages attribute, or 0.
+        int modulePackagesOffset = 0;
+        // - The string corresponding to the ModuleMainClass attribute, or null.
+        String moduleMainClass = null;
+        // - The string corresponding to the NestHost attribute, or null.
+        String nestHostClass = null;
+        // - The offset of the NestMembers attribute, or 0.
+        int nestMembersOffset = 0;
+        // - The offset of the PermittedSubclasses attribute, or 0
+        int permittedSubclassesOffset = 0;
+        // - The offset of the Record attribute, or 0.
+        int recordOffset = 0;
+```
+
+那么都是什么意思呢，我们一个一个看吧： 首先是如果是有内部类相关的，那就是有对应的inner classes的attr，然后是如果是本身是在一个类的函数中声明的类，就会有enclosingMethod的attr，然后是signature是对应类有范型的情况。然后就是各种类上面的注解的情况。
+
+@todo，需要继续阅读了。
+
