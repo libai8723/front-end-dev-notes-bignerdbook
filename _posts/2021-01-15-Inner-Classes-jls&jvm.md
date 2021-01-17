@@ -81,7 +81,6 @@ InnerClasses:
 
 但是等看到这个Job的默认构造函数的时候，对应的指令的时候，没有明白是什么意思：
 
-
 ```text
   Person$1Job(Person);
     descriptor: (LPerson;)V
