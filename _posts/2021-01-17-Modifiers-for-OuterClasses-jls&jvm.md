@@ -29,3 +29,7 @@ tag: "JLS&JVM Spec"
 2. **default** 在同一个package中可以被访问，通常也被称为是package-private
 3. **protected** 在同一个包中可以访问，但是对于包外面的这个类的子类是可以访问的。
 4. **public** 就是在所有的地方都可以访问了，比较开放。
+
+## 为什么一个Outer Class不能被设定为private
+
+
