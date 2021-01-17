@@ -1,12 +1,12 @@
 ---
-title: "The Inner Classes" 
+title: "The Nested Classes" 
 date: 2021-01-15
 
 tag: "JLS&JVM Spec"
 ---
 
 
-## 内嵌类 Inner Class
+## 内嵌类 Nested Class
 
 其实目前我并不知道具体的内嵌类的好处，感觉无非就是代码上的整洁，对外封装不可见。写这个帖子的主要的目的是在阅读java asm的时候，看到了Inner Classes的class级别的Attribute。所以就试验了一下
 
@@ -103,4 +103,28 @@ InnerClasses:
 
 上面的应该对应的是Person.foo中的Job类型的默认构造函数的反编译的指令，这里面的函数的descriptor为啥有一个LPerson;的参数呢？
 
-这个就需要好好再深入研究了。@todo
+这个就需要好好再深入研究了。
+
+## Nested Class在Oracle文档网站上的阅读
+
+其实关于Nested Class的[说明](https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html)，在Oracle的官方文档里面说的是非常清晰的。
+
+第一句就表明了这个事情，jls是允许我们在一个类中定义另外一个类的，但是在术语上我们区分两类内嵌类
+
+1. 静态内嵌类（static nested class）： 被static修饰的内部的class的定义。
+2. 内部类（None-Static nested class AKA. inner classes)：通常意义上没有被static关键字修饰的内嵌类
+
+```java
+class OuterClass {
+    ...
+    static class StaticNestedClass {
+        ...
+    }
+    class InnerClass {
+        ...
+    }
+}
+```
+
+@todo，太晚了，需要赶紧回家了，明天继续阅读吧。
+
