@@ -1,6 +1,6 @@
 ---
 title: "The Inner Classes" 
-date: 2020-12-17
+date: 2021-01-15
 
 tag: "JLS&JVM Spec"
 ---
