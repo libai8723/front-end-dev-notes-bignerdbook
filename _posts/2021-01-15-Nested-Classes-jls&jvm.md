@@ -146,7 +146,7 @@ class OuterClass {
 
 #### 2.2.1 静态内嵌类
 
-就像class method 和 class variable一样，静态内嵌类是和它的外部类关联的（associated），下面这句话比较精确了，就像一个静态类方法一样，一个静态内嵌类不能直接引用实例变量（instance variables)或者是其他的非静态方法：静态内嵌类只能通过对象引用（object reference to Class instance）来访问它们。
+就像class method 和 class variable一样，静态内嵌类是和它的外部类关联的（associated），下面这句话比较精确了，就像一个静态类方法一样，一个静态内嵌类不能直接引用实例的变量（instance variables)或者是其他的非静态方法：静态内嵌类只能通过对象引用（object reference to Class instance）来访问它们。
 
 ```text
 Note: 一个静态内嵌类与包含它的外部类的实例成员的交互方式就像其他顶层类一样。实际上，一个静态内嵌类在行为上来看就和一个顶层类是一样的，内嵌到另外一个顶层类中仅仅是为了打包的方便。
