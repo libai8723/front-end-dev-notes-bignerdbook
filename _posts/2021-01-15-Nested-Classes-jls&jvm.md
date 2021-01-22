@@ -6,6 +6,7 @@ tag: "JLS&JVM Spec"
 ---
 
 
+
 ## 一、内嵌类 Nested Class
 
 其实目前我并不知道具体的内嵌类的好处，感觉无非就是代码上的整洁，对外封装不可见。写这个帖子的主要的目的是在阅读java asm的时候，看到了Inner Classes的class级别的Attribute。所以就试验了一下
@@ -104,6 +105,7 @@ InnerClasses:
 上面的应该对应的是Person.foo中的Job类型的默认构造函数的反编译的指令，这里面的函数的descriptor为啥有一个LPerson;的参数呢？
 
 这个就需要好好再深入研究了。
+
 
 ## 二、Nested Class在Oracle文档网站上的阅读
 
