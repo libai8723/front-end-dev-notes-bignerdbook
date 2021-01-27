@@ -29,7 +29,7 @@ tag: "JLS&JVM Spec"
 ```java
 package LocalClasses;
 
-public class LocalClassExample {
+public class Loccent pushes less than a minute agoalClassExample {
     static String regularExpression = "[^0-9]";
 
     public static void validatePhoneNumber(
@@ -117,6 +117,18 @@ Second number is invalid
 比如我想在一个类静态方法中声明一个类，当然是可以的，但是出了这个静态方法，就访问不到这个类了。
 ```
 
-@todo,看到了 Local Classes Are Similar To Inner Classes，这个章节了
+## 四、本地类与内部类的相似之处
 
 [Local Classes Are Similar To Inner Classes](https://docs.oracle.com/javase/tutorial/java/javaOO/localclasses.html)
+
+本地类和内部类是很相似的，它们都不能定义或者声明静态成员。
+
+在上面的代码中，定义在静态方法中的本地类，比如上面的class PhoneNumber，是定义在validatePhoneNumber静态方法中的，所以它只能引用它外部类的静态成员。如果PhoneNumber不是定义在一个静态方法中的话，那它就可以访问外部的非静态的变量。
+
+本地类不是静态的，是因为它们有访问它们外部类实例成员的权限，因此它们不能包含大部分的静态声明。
+
+这里提到大部分是因为，还是可以声明static final类型的静态成员。
+
+@todo，匿名类  [Anonymous Classes](https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html)
+
+@todo, Lambda表达式 [Lambda Expression](https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html)
