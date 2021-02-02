@@ -29,7 +29,7 @@ tag: "JLS&JVM Spec"
 ```java
 package LocalClasses;
 
-public class Loccent pushes less than a minute agoalClassExample {
+public class LocalClassExample {
     static String regularExpression = "[^0-9]";
 
     public static void validatePhoneNumber(
