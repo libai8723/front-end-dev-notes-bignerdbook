@@ -35,7 +35,17 @@ public void boxTest(Box<Number> n) { /* ... */ }
 
 我们可以把```Box<Integer>```或者```Box<Double>```的给到它吗？答案是不行的，因为
 
-```Box<Integer>```和```Box<Double>```和```Box<Number>```是三种不同的类型，不是子类的关系。
+```Box<Integer>```
+
+和
+
+```Box<Double>```
+
+和
+
+```Box<Number>```
+
+是三种不同的类型，不是父类型和子类型之间的关系，如下图
 
 ```text
 +-------------+           +-----------------+
