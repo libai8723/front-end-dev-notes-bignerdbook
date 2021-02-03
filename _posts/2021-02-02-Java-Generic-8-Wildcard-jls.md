@@ -76,7 +76,8 @@ public static void printList(List<?> list) {
     for (Object elem: list)
         System.out.print(elem + " ");
     System.out.println();
-}```
+}
+```
 
 ## 四、下界通配符号
 
